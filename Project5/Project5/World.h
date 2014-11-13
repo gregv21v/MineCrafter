@@ -70,9 +70,9 @@ private:
 	Color _ambientColor;
 	//--------------------------------
 	
-	Game game;
-	Model table;
-	Model bowl;
+	// Models
+	Game _game;
+	Model terrain;
 
 	int sequenceTest;
 

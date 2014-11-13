@@ -41,7 +41,7 @@ void World::init()
 	glLineWidth(3);
 
 	glEnable(GL_DEPTH_TEST);
-	game.init();
+	//game.init();
 	setupTextures();
 }
 
@@ -121,7 +121,9 @@ void World::draw()
 	if (drawAxes)
 		axes->draw(_shader);
 
-	game.draw(_shader);
+	//game.draw(_shader);
+
+	terrain.draw(_shader);
 
 }
 
@@ -149,11 +151,14 @@ void World::initValues()
 	};
 
 	Color axesColor = { .8, .8, .8, 1 };
-	Color roomColor = { 1, .3, 0, 1 };
+	Color terrainColor = { 1, .3, 0, 1 };
 
 	axes->init(axesPosition);
 	axes->setColor(axesColor);
 
+
+	terrain.init("Models/terrain.obj");
+	terrain.setColor(terrainColor);
 
 
 }
