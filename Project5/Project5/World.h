@@ -3,8 +3,10 @@
 #include <GL/glew.h>
 #include <GL/GL.h>
 #include <GL/freeglut.h>
+
 #include <iostream>
 #include <ctime>
+#include <vector>
 #include <stdlib.h>
 
 #include "LoadShaders.h"
@@ -19,6 +21,7 @@
 #include "Camera.h"
 #include "Game.h"
 #include "Model.h"
+#include "Block.h"
 
 #define NUM_TEXTURES 3 // cards and table
 #define CAM_MOVE .1
@@ -49,8 +52,11 @@ private:
 	Shader _roomShader;
 	PointLight _light;
 
+	
+	std::vector<Block *> blocks;
 	std::string _textureFilenames[NUM_TEXTURES];
 	Texture * _textures[NUM_TEXTURES];
+
 
 	Camera _cam;
 

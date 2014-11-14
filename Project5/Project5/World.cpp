@@ -10,8 +10,13 @@ World::World()
 	drawAxes = false;
 
 	// Lighting parameters
-	_directionalColor = { 0.9, 0.9, 0.9 };
-	_ambientColor = { 0.7, 0.7, 0.4 };
+	
+	_directionalColor.red = 0.9;
+	_directionalColor.green = 0.9;
+	_directionalColor.blue = 0.9;
+	_ambientColor.red = 0.7;
+	_ambientColor.green = 0.7;
+	_ambientColor.blue = 0.4;
 
 	run_game = false;
 }
@@ -59,8 +64,20 @@ void World::display()
 
 void World::keyPress(unsigned char key, int x, int y)
 {
+	Color black;
+	black.red = 0;
+	black.green = 0;
+	black.blue = 0;
+	black.alpha = 1;
+	Block * block;
 	switch (key)
 	{
+	case 'p':
+		block = new Block();
+		block->init("Models/Block.obj");
+		block->setColor(black);
+		blocks.push_back(block);
+		break;
 	case 'n':
 
 		break;
@@ -92,10 +109,10 @@ void World::arrowInput(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		_cam.camUp(CAM_MOVE);
+		_cam.camIn(CAM_MOVE);
 		break;
 	case GLUT_KEY_DOWN:
-		_cam.camDown(CAM_MOVE);
+		_cam.camOut(CAM_MOVE);
 		break;
 	case GLUT_KEY_LEFT:
 		_cam.camLeft(CAM_MOVE);
@@ -122,6 +139,11 @@ void World::draw()
 		axes->draw(_shader);
 
 	//game.draw(_shader);
+
+	for (int i = 0; i < blocks.size(); i++)
+	{
+		blocks[i]->draw(_shader);
+	}
 
 	terrain.draw(_shader);
 
@@ -150,8 +172,16 @@ void World::initValues()
 		{ vec4(0.0, 0.0, -5.0, 1.0), vec4(0.0, 0.0, 5.0, 1.0) }
 	};
 
-	Color axesColor = { .8, .8, .8, 1 };
-	Color terrainColor = { 1, .3, 0, 1 };
+	Color axesColor, terrainColor;
+	axesColor.red = 0.8;
+	axesColor.green = 0.8;
+	axesColor.blue = 0.8;
+	axesColor.alpha = 1.0;
+
+	terrainColor.red = 1.0;
+	terrainColor.blue = 0.3;
+	terrainColor.green = 0.0;
+	terrainColor.alpha = 1.0;
 
 	axes->init(axesPosition);
 	axes->setColor(axesColor);
@@ -159,6 +189,7 @@ void World::initValues()
 
 	terrain.init("Models/terrain.obj");
 	terrain.setColor(terrainColor);
+
 
 
 }
