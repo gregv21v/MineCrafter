@@ -3,8 +3,8 @@
 
 Player::Player()
 {
-	transform = mat4::identity();
-	center = vmath::vec4(0, 0, 0, 1);
+	//transform = mat4::identity();
+	//center = vmath::vec4(0, 0, 0, 1);
 }
 
 Player::~Player()
@@ -17,13 +17,13 @@ Player::~Player()
 
 
 
-void Player::draw(Shader shader)
+/*void Player::draw(Shader shader)
 {
 
 }
+*/
 
-
-// Transformation Stuff
+/*// Transformation Stuff
 void Player::scale(float scaleFactor)
 {
 	// Translate to center
@@ -63,4 +63,30 @@ void Player::updateCenter()
 	center[0] = transform[3][0];
 	center[1] = transform[3][1];
 	center[2] = transform[3][2];
+}
+*/
+
+
+
+void Player::moveLeft(float distance)
+{
+	_position[0] -= distance;
+}
+void Player::moveRight(float distance)
+{
+	_position[0] += distance;
+}
+void Player::moveForward(float distance)
+{
+	_position[2] += distance;
+}
+void Player::moveBackwards(float distance)
+{
+	_position[2] -= distance;
+}
+
+
+vmath::vec3 Player::getPosition()
+{
+	return _position;
 }

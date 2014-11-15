@@ -72,7 +72,8 @@ private:
 	
 	// Models
 	Game _game;
-	Model terrain;
+	Player _player;
+	Model _terrain;
 
 	int sequenceTest;
 

@@ -92,16 +92,20 @@ void World::arrowInput(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		_cam.camUp(CAM_MOVE);
+		_player.moveForward(CAM_MOVE);
+		_cam.setEye(_player.getPosition());
 		break;
 	case GLUT_KEY_DOWN:
-		_cam.camDown(CAM_MOVE);
+		_player.moveBackwards(CAM_MOVE);
+		_cam.setEye(_player.getPosition());
 		break;
 	case GLUT_KEY_LEFT:
-		_cam.camLeft(CAM_MOVE);
+		_player.moveLeft(CAM_MOVE);
+		_cam.setEye(_player.getPosition());
 		break;
 	case GLUT_KEY_RIGHT:
-		_cam.camRight(CAM_MOVE);
+		_player.moveRight(CAM_MOVE);
+		_cam.setEye(_player.getPosition());
 		break;
 	}
 
@@ -123,7 +127,7 @@ void World::draw()
 
 	//game.draw(_shader);
 
-	terrain.draw(_shader);
+	_terrain.draw(_shader);
 
 }
 
@@ -157,8 +161,8 @@ void World::initValues()
 	axes->setColor(axesColor);
 
 
-	terrain.init("Models/terrain.obj");
-	terrain.setColor(terrainColor);
+	_terrain.init("Models/terrain.obj");
+	_terrain.setColor(terrainColor);
 
 
 }
