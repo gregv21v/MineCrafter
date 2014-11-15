@@ -13,47 +13,46 @@ Camera::~Camera()
 
 void Camera::camOut(float move)
 {
-	eye_z += move;
+	eye[2] += move;
 	update();
 }
 
 void Camera::camIn(float move)
 {
-	eye_z -= move;
+	eye[2] -= move;
 	update();
 }
 
 void Camera::camUp(float move)
 {
-	eye_y += move;
+	eye[1] += move;
 	update();
 }
 
 void Camera::camDown(float move)
 {
-	eye_y -= move;
+	eye[1] -= move;
 	update();
 }
 
 void Camera::camLeft(float move)
 {
-	eye_x -= move;
+	eye[0] -= move;
 	update();
 }
 
 void Camera::camRight(float move)
 {
-	eye_x += move;
+	eye[0] += move;
 	update();
 }
 
 void Camera::init()
 {
-	eye_x = 0;
-	eye_y = 2;
-	eye_z = 3;
+	eye[0] = 0;
+	eye[1] = 2;
+	eye[2] = 3;
 
-	eye = vmath::vec3(eye_x, eye_y, eye_z);
 	center = vmath::vec3(0, 0, 0);
 	up = vmath::vec3(0, 1, 0);
 
@@ -66,14 +65,18 @@ void Camera::init()
 
 void Camera::update()
 {
-	eye = vmath::vec3(eye_x, eye_y, eye_z);
 	view = vmath::lookat(eye, center, up);// *overhead;
+}
+
+void Camera::setEye(vmath::vec3 eye)
+{
+
 }
 
 void Camera::reverse()
 {
-	eye_z = -eye_z;
-	eye_x = -eye_x;
+	eye[2] *= -1;
+	eye[0] *= -1;
 
 	update();
 }

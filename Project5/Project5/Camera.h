@@ -27,16 +27,15 @@ public:
 	void camDown(float);
 	void camLeft(float);
 	void camRight(float);
+
+	void setEye(vmath::vec3 eye);
+
 	void init();
 	void update();
 	void reverse();
 	void render(Shader);
 
 private:
-
-	float eye_x;
-	float eye_y;
-	float eye_z;
 
 	vmath::vec3 center;
 	vmath::vec3 up;

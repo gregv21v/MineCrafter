@@ -9,8 +9,6 @@
 #include "vmath.h"
 #include "Shader.h"
 
-using vmath::mat4;
-
 class Player
 {
 
@@ -20,25 +18,30 @@ public:
 	~Player();
 
 
-	void draw(Shader);
+	//void draw(Shader);
 
 
-
+	/*
 	void scale(float);
 	void translate(float, float, float);
 	void rotate(float, vmath::vec3);
 	void updateCenter();
+	*/
+	
 
+	void moveLeft(float distance);
+	void moveRight(float distance);
+	void moveForward(float distance);
+	void moveBackwards(float distance);
 
-
-	vmath::vec4 center;
+	vmath::vec3 getPosition();
 
 private:
 
-	
+	vmath::vec3 _position;
 
 	
-	mat4 transform;
+	//mat4 transform;
 	
 };
 
