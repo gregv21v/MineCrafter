@@ -3,6 +3,9 @@
 #include <GL/glew.h>
 #include <GL/GL.h>
 #include <GL/freeglut.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <cstdlib>
 #include <math.h>
@@ -10,6 +13,7 @@
 #include "LoadShaders.h"
 #include "vgl.h"
 #include "vmath.h"
+
 
 #include "Shader.h"
 
@@ -21,28 +25,35 @@ public:
 	Camera();
 	~Camera();
 
-	void camOut(float);
-	void camIn(float);
-	void camUp(float);
-	void camDown(float);
-	void camLeft(float);
-	void camRight(float);
+	void moveOut(float);
+	void moveIn(float);
+	void moveUp(float);
+	void moveDown(float);
+	void moveLeft(float);
+	void moveRight(float);
 
-	void setEye(vmath::vec3 eye);
+	void panUp(float distance);
+	void panDown(float distance);
+	void panRight(float distance);
+	void panLeft(float distance);
+
+	
 
 	void init();
-	void update();
+	void translate(float x, float y, float z);
+	void rotate(float angle, glm::vec3 axis);
 	void reverse();
 	void render(Shader);
 
 private:
 
-	vmath::vec3 center;
-	vmath::vec3 up;
-	vmath::vec3 eye;
+	glm::vec3 center;
+	glm::vec3 up;
+	glm::vec3 _eye;
 
-	mat4 view;
-	mat4 frustum;
-	mat4 overhead;
+	glm::mat4 view;
+	glm::mat4 transform;
+	glm::mat4 frustum;
+	glm::mat4 overhead;
 };
 

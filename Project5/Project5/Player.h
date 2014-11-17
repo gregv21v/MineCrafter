@@ -21,12 +21,12 @@ public:
 	//void draw(Shader);
 
 
-	/*
+	
 	void scale(float);
 	void translate(float, float, float);
 	void rotate(float, vmath::vec3);
-	void updateCenter();
-	*/
+	void updatePosition();
+	
 	
 
 	void moveLeft(float distance);
@@ -34,14 +34,14 @@ public:
 	void moveForward(float distance);
 	void moveBackwards(float distance);
 
-	vmath::vec3 getPosition();
+	vmath::vec4 getPosition();
 
 private:
 
-	vmath::vec3 _position;
+	vmath::vec4 _position;
 
 	
-	//mat4 transform;
+	vmath::mat4 transform;
 	
 };
 

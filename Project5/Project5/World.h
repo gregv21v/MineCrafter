@@ -22,6 +22,8 @@
 #include "Game.h"
 #include "Model.h"
 #include "Block.h"
+#include "Window.h"
+
 
 #define NUM_TEXTURES 3 // cards and table
 #define CAM_MOVE .1
@@ -36,10 +38,12 @@ public:
 
 	World();
 	~World();
-	void init();							// initializes World
+	void init(Window * window);							// initializes World
 	void display();							// display function
 	void keyPress(unsigned char, int, int);
 	void arrowInput(int, int, int);
+	void mousePressed(int button, int state, int x, int y);
+	void mousePassiveMove(int x, int y);
 	void draw();							// draw function for entire World
 	void initValues();						// initializes values
 	void setupTextures();
@@ -51,11 +55,14 @@ private:
 	Shader _shader;
 	Shader _roomShader;
 	PointLight _light;
-
+	Window * _window;
 	
-	std::vector<Block *> blocks;
+	std::vector<Block *> _blocks;
 	std::string _textureFilenames[NUM_TEXTURES];
 	Texture * _textures[NUM_TEXTURES];
+
+	// Mouse Movement variables
+	vec2 _lastMousePosition;
 
 
 	Camera _cam;

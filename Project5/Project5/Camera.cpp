@@ -11,79 +11,102 @@ Camera::~Camera()
 {
 }
 
-void Camera::camOut(float move)
+void Camera::moveOut(float move)
 {
-	eye[2] += move;
-	update();
+	translate(0, 0, -move);
 }
 
-void Camera::camIn(float move)
+void Camera::moveIn(float move)
 {
-	eye[2] -= move;
-	update();
+	translate(0, 0, move);
 }
 
-void Camera::camUp(float move)
+void Camera::moveUp(float move)
 {
-	eye[1] += move;
-	update();
+	translate(0, move, 0);
 }
 
-void Camera::camDown(float move)
+void Camera::moveDown(float move)
 {
-	eye[1] -= move;
-	update();
+	translate(0, -move, 0);
 }
 
-void Camera::camLeft(float move)
+void Camera::moveLeft(float move)
 {
-	eye[0] -= move;
-	update();
+	translate(-move, 0, 0);
 }
 
-void Camera::camRight(float move)
+void Camera::moveRight(float move)
 {
-	eye[0] += move;
-	update();
+	translate(move, 0, 0);
 }
+
+void Camera::panUp(float distance)
+{
+	rotate(distance, glm::vec3(0, 0, 1));
+}
+void Camera::panDown(float distance)
+{
+	rotate(-distance, glm::vec3(0, 0, 1));
+}
+void Camera::panRight(float distance)
+{
+	rotate(distance, glm::vec3(1, 0, 0));
+}
+void Camera::panLeft(float distance)
+{
+	rotate(-distance, glm::vec3(1, 0, 0));
+}
+
+
 
 void Camera::init()
 {
-	eye[0] = 0;
-	eye[1] = 2;
-	eye[2] = 3;
+	_eye[0] = 0;
+	_eye[1] = 2;
+	_eye[2] = 3;
 
-	center = vmath::vec3(0, 0, 0);
-	up = vmath::vec3(0, 1, 0);
+	center = glm::vec3(0, 0, 0);
+	up = glm::vec3(0, 1, 0);
 
 	
-	//overhead = vmath::rotate((float)60, vmath::vec3(1, 0, 0)) * vmath::rotate((float)-90, vmath::vec3(0, 1, 0));
-	view = vmath::lookat(eye, center, up);// *overhead;
+	//overhead = glm::rotate((float)60, glm::vec3(1, 0, 0)) * glm::rotate((float)-90, glm::vec3(0, 1, 0));
+	view = glm::lookAt(_eye, center, up);// *overhead;
 
-	frustum = vmath::frustum(-0.2, 0.2, -0.2, 0.2, 0.3, 100);
+	frustum = glm::frustum((float)-0.2f, (float)0.2f, (float)-0.2f, (float)0.2f, (float)0.3f, (float)100);
 }
 
-void Camera::update()
+void Camera::translate(float x, float y, float z)
 {
-	view = vmath::lookat(eye, center, up);// *overhead;
+	glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
+	view = view * transform;
+
+	// update center
 }
 
-void Camera::setEye(vmath::vec3 eye)
+void Camera::rotate(float angle, glm::vec3 axis)
 {
+	glm::mat4 vecMatrix;
+	vecMatrix[3] += glm::vec4(_eye, 1);
+	glm::mat4 rot = glm::rotate(vecMatrix, angle, axis);
+	vecMatrix *= rot;
 
+	_eye = glm::vec3(vecMatrix[3]);
+
+	view = glm::lookAt(_eye, center, up);
+	view = view * transform;
 }
 
 void Camera::reverse()
 {
-	eye[2] *= -1;
-	eye[0] *= -1;
+	//_eye[2] *= -1;
+	//_eye[0] *= -1;
 
-	update();
 }
 
 // Sets up uniform for the View Projection Matrix
 void Camera::render(Shader shader)
 {
-	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, frustum * view);
-	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, view);
+	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, glm::value_ptr(frustum * view));
+	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, glm::value_ptr(view));
 }

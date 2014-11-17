@@ -3,8 +3,8 @@
 
 Player::Player()
 {
-	//transform = mat4::identity();
-	//center = vmath::vec4(0, 0, 0, 1);
+	transform = vmath::mat4::identity();
+	_position = vmath::vec4(0, 6, 0, 1);
 }
 
 Player::~Player()
@@ -23,17 +23,17 @@ Player::~Player()
 }
 */
 
-/*// Transformation Stuff
+// Transformation Stuff
 void Player::scale(float scaleFactor)
 {
-	// Translate to center
-	vmath::mat4 translate1 = vmath::translate(-center[0], -center[1], -center[2]);
+	// Translate to _position
+	vmath::mat4 translate1 = vmath::translate(-_position[0], -_position[1], -_position[2]);
 	vmath::mat4 scale = vmath::scale(scaleFactor);
-	vmath::mat4 translate2 = vmath::translate(center[0], center[1], center[2]);
+	vmath::mat4 translate2 = vmath::translate(_position[0], _position[1], _position[2]);
 
 	scale = (translate2 * scale * translate1);
 	transform = scale * transform;
-	updateCenter();
+	updatePosition();
 
 }
 
@@ -42,51 +42,51 @@ void Player::translate(float x, float y, float z)
 	vmath::mat4 translate = vmath::translate(x, y, z);
 	transform = translate * transform;
 
-	updateCenter();
+	updatePosition();
 
 }
 
 void Player::rotate(float angle, vmath::vec3 inAxis)
 {
-	// Translate to center
-	vmath::mat4 translate1 = vmath::translate(-center[0], -center[1], -center[2]);
+	// Translate to _position
+	vmath::mat4 translate1 = vmath::translate(-_position[0], -_position[1], -_position[2]);
 	vmath::mat4 rotate = vmath::rotate(angle, inAxis);
-	vmath::mat4 translate2 = vmath::translate(center[0], center[1], center[2]);
+	vmath::mat4 translate2 = vmath::translate(_position[0], _position[1], _position[2]);
 
 	rotate = (translate2 * rotate * translate1);
 	transform = rotate * transform;
-	updateCenter();
+	updatePosition();
 }
 
-void Player::updateCenter()
+void Player::updatePosition()
 {
-	center[0] = transform[3][0];
-	center[1] = transform[3][1];
-	center[2] = transform[3][2];
+	_position[0] = transform[3][0];
+	_position[1] = transform[3][1];
+	_position[2] = transform[3][2];
 }
-*/
+
 
 
 
 void Player::moveLeft(float distance)
 {
-	_position[0] -= distance;
+	translate(-distance, 0, 0);
 }
 void Player::moveRight(float distance)
 {
-	_position[0] += distance;
+	translate(distance, 0, 0);
 }
 void Player::moveForward(float distance)
 {
-	_position[2] += distance;
+	translate(0, 0, distance);
 }
 void Player::moveBackwards(float distance)
 {
-	_position[2] -= distance;
+	translate(0, 0, -distance);
 }
 
 
-vmath::vec3 Player::getPosition()
+vmath::vec4 Player::getPosition()
 {
 	return _position;
 }

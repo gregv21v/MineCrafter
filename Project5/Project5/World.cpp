@@ -29,8 +29,10 @@ World::~World()
 	}
 }
 
-void World::init()
+void World::init(Window * window)
 {
+
+	_window = window;
 	initValues();
 	_cam.init();
 	_shader.init("Shaders/PointLight.vert", "Shaders/PointLight.frag");
@@ -62,21 +64,28 @@ void World::display()
 	glutSwapBuffers();
 }
 
+
+
+
 void World::keyPress(unsigned char key, int x, int y)
 {
-	Color black;
+	Color black; 
+	Block * block; 
+	float distance = 0.1; 
+	vmath::vec4 eye = _player.getPosition();
 	black.red = 0;
-	black.green = 0;
+	black.green = 255;
 	black.blue = 0;
 	black.alpha = 1;
-	Block * block;
+	
 	switch (key)
 	{
 	case 'p':
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(black);
-		blocks.push_back(block);
+		block->translate(eye[0], eye[1], eye[2]);
+		_blocks.push_back(block);
 		break;
 	case 'n':
 
@@ -86,16 +95,38 @@ void World::keyPress(unsigned char key, int x, int y)
 		break;
 	case 'l':
 		_light.toggle();
-		cout << "Is state: " << _light.isOn() << endl;
+		//cout << "Is state: " << _light.isOn() << endl;
 		break;
 	case 'i':
-		_cam.camIn(CAM_MOVE);
+		//_cam.camIn(CAM_MOVE);
 		break;
 	case 'o':
-		_cam.camOut(CAM_MOVE);
+		//_cam.camOut(CAM_MOVE);
 		break;
 	case 'q':
 		drawAxes = !drawAxes;
+		break;
+	// movement
+	case 'w':
+	case 'W':
+		_player.moveForward(distance);
+		_cam.moveIn(distance);
+		cout << "( " << _player.getPosition()[0] << ", " << _player.getPosition()[2]  << ") " << endl;
+		break;
+	case 's':
+	case 'S':
+		_player.moveBackwards(distance);
+		_cam.moveOut(distance);
+		break;
+	case 'a':
+	case 'A':
+		_player.moveLeft(distance);
+		_cam.moveLeft(distance);
+		break;
+	case 'd':
+	case 'D':
+		_player.moveRight(distance);
+		_cam.moveRight(distance);
 		break;
 	default:
 		break;
@@ -104,32 +135,62 @@ void World::keyPress(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+void World::mousePressed(int button, int state, int x, int y)
+{
+
+	Color blockColor;
+	Block * block;
+	float distance = 0.1;
+	
+	glm::vec2 mousePos = glm::vec2(x, y);
+	mousePos = _window->normalizeTo(mousePos);
+	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
+	blockColor.red = 0;
+	blockColor.green = 255;
+	blockColor.blue = 0;
+	blockColor.alpha = 1;
+
+
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		block = new Block();
+		block->init("Models/Block.obj");
+		block->setColor(blockColor);
+		block->translate(placePoint.x, placePoint.y, placePoint.z);
+		_blocks.push_back(block);
+		cout << "Block added" << endl;
+	}
+
+}
+
+void World::mousePassiveMove(int x, int y)
+{
+	vec2 direction = _lastMousePosition - vec2(x, y); // the direction the mouse is moving
+	_lastMousePosition = vec2(x, y);
+	
+	
+	
+}
+
+
+
 void World::arrowInput(int key, int x, int y)
 {
+	float distance = 0.01;
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-<<<<<<< HEAD
-		_cam.camIn(CAM_MOVE);
+		_cam.panUp(distance);
 		break;
 	case GLUT_KEY_DOWN:
-		_cam.camOut(CAM_MOVE);
-=======
-		_player.moveForward(CAM_MOVE);
-		_cam.setEye(_player.getPosition());
-		break;
-	case GLUT_KEY_DOWN:
-		_player.moveBackwards(CAM_MOVE);
-		_cam.setEye(_player.getPosition());
->>>>>>> origin/Travis
+		_cam.panDown(distance);
 		break;
 	case GLUT_KEY_LEFT:
-		_player.moveLeft(CAM_MOVE);
-		_cam.setEye(_player.getPosition());
+		_cam.panLeft(distance);
+
 		break;
 	case GLUT_KEY_RIGHT:
-		_player.moveRight(CAM_MOVE);
-		_cam.setEye(_player.getPosition());
+		_cam.panRight(distance);
 		break;
 	}
 
@@ -151,16 +212,13 @@ void World::draw()
 
 	//game.draw(_shader);
 
-<<<<<<< HEAD
-	for (int i = 0; i < blocks.size(); i++)
+	for (int i = 0; i < _blocks.size(); i++)
 	{
-		blocks[i]->draw(_shader);
+		_blocks[i]->draw(_shader);
 	}
 
-	terrain.draw(_shader);
-=======
 	_terrain.draw(_shader);
->>>>>>> origin/Travis
+
 
 }
 
@@ -177,6 +235,8 @@ void World::initValues()
 	_light.setQuadraticAttenuation(0.01);
 	_light.setEyeDirection(vmath::vec3(0, 0, 1));
 	_light.toggle();
+
+	_cam.init();
 
 	//----------------------------------------------------------
 	// Data for Axes
@@ -204,6 +264,7 @@ void World::initValues()
 
 	_terrain.init("Models/terrain.obj");
 	_terrain.setColor(terrainColor);
+	_terrain.translate(0, -1.0, 0);
 
 
 
