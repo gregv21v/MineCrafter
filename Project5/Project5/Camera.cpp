@@ -82,7 +82,7 @@ void Camera::init()
 
 void Camera::translate(float x, float y, float z)
 {
-	glm::mat4 _transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
+	_transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
 	_view = _view * _transform;
 
 	// _update _center

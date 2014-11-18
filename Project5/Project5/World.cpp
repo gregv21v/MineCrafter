@@ -144,7 +144,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
+	glm::vec3 projection = glm::vec3(mousePos.x, 0.0, mousePos.y);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -156,7 +156,7 @@ void World::mousePressed(int button, int state, int x, int y)
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(blockColor);
-		block->translate(placePoint.x, placePoint.y, placePoint.z);
+		block->translate(projection.x, projection.y, projection.z/200);
 		_blocks.push_back(block);
 		cout << "Block added" << endl;
 	}

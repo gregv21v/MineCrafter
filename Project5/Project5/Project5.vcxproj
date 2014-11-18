@@ -75,6 +75,7 @@
     <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="lodepng.cpp" />
     <ClCompile Include="main.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object.h" />

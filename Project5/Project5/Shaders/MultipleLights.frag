@@ -23,9 +23,9 @@ uniform LightProperties Lights[MaxLights];
 uniform float Shininess;
 uniform float Strength;
 uniform vec3 EyeDirection;
-in vec4 Color;
-in vec3 Normal;
-in vec4 Position;
+in vec4 vertColor;
+in vec3 vertNormal;
+in vec4 vertPosition;
 out vec4 FragColor;
 
 void main()
