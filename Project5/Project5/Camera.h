@@ -41,19 +41,18 @@ public:
 
 	void init();
 	void translate(float x, float y, float z);
-	void rotate(float angle, glm::vec3 axis);
+	void updateLookAt();
 	void reverse();
 	void render(Shader);
 
 private:
 
-	glm::vec3 center;
-	glm::vec3 up;
+	glm::vec3 _center;
+	glm::vec3 _up;
 	glm::vec3 _eye;
 
-	glm::mat4 view;
-	glm::mat4 transform;
-	glm::mat4 frustum;
-	glm::mat4 overhead;
+	glm::mat4 _view;
+	glm::mat4 _transform;
+	glm::mat4 _frustum;
 };
 

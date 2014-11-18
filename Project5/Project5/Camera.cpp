@@ -43,19 +43,23 @@ void Camera::moveRight(float move)
 
 void Camera::panUp(float distance)
 {
-	rotate(distance, glm::vec3(0, 0, 1));
+	_eye.z += distance; 
+	updateLookAt();
 }
 void Camera::panDown(float distance)
 {
-	rotate(-distance, glm::vec3(0, 0, 1));
+	_eye.z -= distance;
+	updateLookAt();
 }
 void Camera::panRight(float distance)
 {
-	rotate(distance, glm::vec3(1, 0, 0));
+	_eye.x += distance;
+	updateLookAt();
 }
 void Camera::panLeft(float distance)
 {
-	rotate(-distance, glm::vec3(1, 0, 0));
+	_eye.x -= distance;
+	updateLookAt();
 }
 
 
@@ -66,35 +70,32 @@ void Camera::init()
 	_eye[1] = 2;
 	_eye[2] = 3;
 
-	center = glm::vec3(0, 0, 0);
-	up = glm::vec3(0, 1, 0);
+	_center = glm::vec3(0, 0, 0);
+	_up = glm::vec3(0, 1, 0);
 
 	
 	//overhead = glm::rotate((float)60, glm::vec3(1, 0, 0)) * glm::rotate((float)-90, glm::vec3(0, 1, 0));
-	view = glm::lookAt(_eye, center, up);// *overhead;
+	_view = glm::lookAt(_eye, _center, _up);// *overhead;
 
-	frustum = glm::frustum((float)-0.2f, (float)0.2f, (float)-0.2f, (float)0.2f, (float)0.3f, (float)100);
+	_frustum = glm::frustum((float)-0.2f, (float)0.2f, (float)-0.2f, (float)0.2f, (float)0.3f, (float)100);
 }
 
 void Camera::translate(float x, float y, float z)
 {
-	glm::mat4 transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
-	view = view * transform;
+	glm::mat4 _transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
+	_view = _view * _transform;
 
-	// update center
+	// _update _center
+	_center = glm::vec3(_transform[3]);
+
 }
 
-void Camera::rotate(float angle, glm::vec3 axis)
+void Camera::updateLookAt()
 {
-	glm::mat4 vecMatrix;
-	vecMatrix[3] += glm::vec4(_eye, 1);
-	glm::mat4 rot = glm::rotate(vecMatrix, angle, axis);
-	vecMatrix *= rot;
+	_view = glm::lookAt(_eye, _center, _up);
+	_view = _view * _transform;
 
-	_eye = glm::vec3(vecMatrix[3]);
 
-	view = glm::lookAt(_eye, center, up);
-	view = view * transform;
 }
 
 void Camera::reverse()
@@ -104,9 +105,9 @@ void Camera::reverse()
 
 }
 
-// Sets up uniform for the View Projection Matrix
+// Sets _up uniform for the View Projection Matrix
 void Camera::render(Shader shader)
 {
-	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, glm::value_ptr(frustum * view));
-	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, glm::value_ptr(_frustum * _view));
+	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, glm::value_ptr(_view));
 }

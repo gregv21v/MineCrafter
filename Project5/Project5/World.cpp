@@ -176,7 +176,7 @@ void World::mousePassiveMove(int x, int y)
 
 void World::arrowInput(int key, int x, int y)
 {
-	float distance = 0.01;
+	float distance = 0.1;
 	switch (key)
 	{
 	case GLUT_KEY_UP:
