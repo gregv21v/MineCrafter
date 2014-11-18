@@ -33,12 +33,12 @@ void Camera::moveDown(float move)
 
 void Camera::moveLeft(float move)
 {
-	translate(-move, 0, 0);
+	translate(move, 0, 0);
 }
 
 void Camera::moveRight(float move)
 {
-	translate(move, 0, 0);
+	translate(-move, 0, 0);
 }
 
 void Camera::panUp(float distance)
