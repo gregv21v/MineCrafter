@@ -41,6 +41,7 @@ public:
 
 	void init();
 	void translate(float x, float y, float z);
+	void rotate(GLfloat angle, float x, float y, float z);
 	void updateLookAt();
 	void reverse();
 	void render(Shader);

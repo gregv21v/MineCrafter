@@ -90,6 +90,14 @@ void Camera::translate(float x, float y, float z)
 
 }
 
+void Camera::rotate(GLfloat angle, float x, float y, float z)
+{
+	glm::mat4 _transform;
+	_transform = glm::rotate(_transform, angle, glm::vec3(x, y, z));
+
+	_view = _view * _transform;
+}
+
 void Camera::updateLookAt()
 {
 	_view = glm::lookAt(_eye, _center, _up);
