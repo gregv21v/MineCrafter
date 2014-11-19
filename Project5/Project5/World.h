@@ -4,6 +4,8 @@
 #include <GL/GL.h>
 #include <GL/freeglut.h>
 
+#include <glm/glm.hpp>
+
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -11,7 +13,6 @@
 
 #include "LoadShaders.h"
 #include "vgl.h"
-#include "vmath.h"
 #include "Object.h"
 #include "Texture.h"
 #include "Shader.h"
@@ -55,14 +56,14 @@ private:
 	Shader _shader;
 	Shader _roomShader;
 	PointLight _light;
-	Window _window;
+	Window * _window;
 	
 	std::vector<Block *> _blocks;
 	std::string _textureFilenames[NUM_TEXTURES];
 	Texture * _textures[NUM_TEXTURES];
 
 	// Mouse Movement variables
-	vec2 _lastMousePosition;
+	glm::vec2 _lastMousePosition;
 
 
 	Camera _cam;

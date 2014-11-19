@@ -140,15 +140,15 @@ void World::mousePressed(int button, int state, int x, int y)
 
 	Color blockColor;
 	Block * block;
-	float distance = 0.1;
-	
-	glm::vec2 mousePos = glm::vec2(x, y);
-	mousePos = _window->normalizeTo(mousePos);
-	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
 	blockColor.alpha = 1;
+	float distance = 0.1;
+	
+	glm::vec2 mousePos = _window->normalizeTo(glm::vec2(x, y));
+	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
+	
 
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -161,20 +161,26 @@ void World::mousePressed(int button, int state, int x, int y)
 		cout << "Block added" << endl;
 	}
 
+	glutPostRedisplay();
+
 }
 
 void World::mousePassiveMove(int x, int y)
 {
-	vec2 direction = _lastMousePosition - vec2(x, y); // the direction the mouse is moving
-	vec2 mousePos(x, y);
-	mousePos = _window.normalizeTo(mousePos);
+	glm::vec2 mousePos(x, y);
+	mousePos = _window->normalizeTo(mousePos);
+	glm::vec2 direction = _lastMousePosition - mousePos; // the direction the mouse is moving
+	
 	float amountX = pow(_lastMousePosition[0] - x, 2);
 	float amountY = pow(_lastMousePosition[1] - y, 2);
 	GLfloat distance = sqrt(amountX + amountY);
 
-	_cam.rotate(distance * (1.0f/360.0f), amountX / (amountX + amountY), amountY / (amountX + amountY), 0.0);
+	_cam.rotate(distance * (3.14159f/360.0f), amountX / (amountX + amountY), amountY / (amountX + amountY), 0.0);
 	
-	_lastMousePosition = vec2(x, y);
+	_lastMousePosition = mousePos;
+
+	glutPostRedisplay();
+
 }
 
 
