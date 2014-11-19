@@ -16,8 +16,9 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Axes.h"
+#include "Light.h"
 #include "DirectionalLight.h"
-#include "PointLight.h"
+#include "SpotLight.h"
 #include "Camera.h"
 #include "Game.h"
 #include "Model.h"
@@ -25,9 +26,7 @@
 #include "Window.h"
 
 
-#define NUM_TEXTURES 3 // cards and table
-#define CAM_MOVE .1
-#define NUM_OBJECTS 4
+
 
 using vmath::mat4;
 
@@ -54,39 +53,33 @@ private:
 	
 	Shader _shader;
 	Shader _roomShader;
-	PointLight _light;
 	Window * _window;
 	
 	std::vector<Block *> _blocks;
-	std::string _textureFilenames[NUM_TEXTURES];
-	Texture * _textures[NUM_TEXTURES];
+	std::vector<std::string> _textureFilenames;
+	std::vector<Texture *> _textures;
 
 	// Mouse Movement variables
 	vec2 _lastMousePosition;
 
 
-	Camera _cam;
+	
 
 	bool drawAxes;
 	Axes* axes;
 	
 	GLuint _program;
 
-	//--------------------------------
-	// Lighting variables
-	//--------------------------------
-	float _lightStrength;
-	float _lightShinniness;
-	vmath::vec3 _lightDirection;
 
-	Color _directionalColor;
-	Color _ambientColor;
-	//--------------------------------
 	
-	// Models
+	// Game Objects
 	Game _game;
 	Player _player;
 	Model _terrain;
+	Camera _cam;
+
+	DirectionalLight _light;
+	SpotLight _flashLight;
 
 	int sequenceTest;
 

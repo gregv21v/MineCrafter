@@ -2,28 +2,17 @@
 
 World::World()
 {
-	srand(time(NULL));
-
-	sequenceTest = 0;
 
 	axes = new Axes();
 	drawAxes = false;
 
-	// Lighting parameters
-	
-	_directionalColor.red = 0.9;
-	_directionalColor.green = 0.9;
-	_directionalColor.blue = 0.9;
-	_ambientColor.red = 0.7;
-	_ambientColor.green = 0.7;
-	_ambientColor.blue = 0.4;
 
 	run_game = false;
 }
 
 World::~World()
 {
-	for (int i = 0; i < NUM_TEXTURES; i++)
+	for (int i = 0; i < _textures.size(); i++)
 	{
 		delete _textures[i];
 	}
@@ -35,7 +24,8 @@ void World::init(Window * window)
 	_window = window;
 	initValues();
 	_cam.init();
-	_shader.init("Shaders/PointLight.vert", "Shaders/PointLight.frag");
+	//_shader.init("Shaders/PointLight.vert", "Shaders/PointLight.frag");
+	_shader.init("Shaders/MultipleLights.vert", "Shaders/MultipleLights.frag");
 	//_roomShader.init("RoomVert.vert", "RoomFrag.frag");
 
 
@@ -144,7 +134,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec3 projection = glm::vec3(mousePos.x, 0.0, mousePos.y);
+	glm::vec3 projection = glm::vec3(1 - mousePos.x, 0.0, 1 - mousePos.y);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -203,6 +193,7 @@ void World::draw()
 
 	// setup lighting uniforms
 	_light.render(_shader);
+	_flashLight.render(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -225,16 +216,8 @@ void World::draw()
 void World::initValues()
 {
 	// init light values
-	_light.setColor(_directionalColor);
-	_light.setAmbient(_ambientColor);
-	_light.setPosition(vmath::vec3(0.5, 0.5, 0.5));
-	_light.setShininess(2);
-	_light.setStrength(6);
-	_light.setConstantAttenuation(0.25);
-	_light.setLinearAttenuation(0.25);
-	_light.setQuadraticAttenuation(0.01);
-	_light.setEyeDirection(vmath::vec3(0, 0, 1));
-	_light.toggle();
+	_light._index = 0;
+	_flashLight._index = 0;
 
 	_cam.init();
 

@@ -1,6 +1,5 @@
 #version 330 core
 
-
 struct LightProperties {
 	bool isEnabled;
 	bool isLocal;
@@ -15,7 +14,7 @@ struct LightProperties {
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
-}
+};
 
 // the set of lights to apply, per invocation of this shader
 const int MaxLights = 2;

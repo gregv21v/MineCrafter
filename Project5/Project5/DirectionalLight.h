@@ -12,13 +12,5 @@
 #include "Color.h"
 #include "Light.h"
 
-class DirectionalLight : public Light
-{
-public:
-	DirectionalLight();
-	~DirectionalLight();
-
-	void render(Shader shader);
-	void init();
-};
+class DirectionalLight : public Light{};
 

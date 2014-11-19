@@ -14,9 +14,10 @@ public:
 
 	void render(Shader shader);
 	void init();
+	void toggle();
 
 //private:
-	int index;
+	int _index;
 	bool _isEnabled;
 	bool _isLocal;
 	bool _isSpot;
