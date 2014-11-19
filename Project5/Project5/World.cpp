@@ -134,7 +134,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec3 projection = glm::vec3(1 - mousePos.x, 0.0, 1 - mousePos.y);
+	glm::vec3 projection = glm::vec3(mousePos.x, mousePos.y/mousePos.x, mousePos.y);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -146,11 +146,12 @@ void World::mousePressed(int button, int state, int x, int y)
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(blockColor);
-		block->translate(projection.x, projection.y, projection.z/200);
+		block->translate(projection.x, projection.y, projection.z);
 		_blocks.push_back(block);
 		cout << "Block added" << endl;
 	}
 
+	glutPostRedisplay();
 }
 
 void World::mousePassiveMove(int x, int y)
@@ -159,7 +160,7 @@ void World::mousePassiveMove(int x, int y)
 	_lastMousePosition = vec2(x, y);
 	
 	
-	
+	glutPostRedisplay();
 }
 
 
@@ -217,7 +218,7 @@ void World::initValues()
 {
 	// init light values
 	_light._index = 0;
-	_flashLight._index = 0;
+	_flashLight._index = 1;
 
 	_cam.init();
 
