@@ -166,8 +166,10 @@ void World::mousePressed(int button, int state, int x, int y)
 void World::mousePassiveMove(int x, int y)
 {
 	vec2 direction = _lastMousePosition - vec2(x, y); // the direction the mouse is moving
-	float amountX = pow(abs(_lastMousePosition[0] - x), 2);
-	float amountY = pow(abs(_lastMousePosition[1] - y), 2);
+	vec2 mousePos(x, y);
+	mousePos = _window.normalizeTo(mousePos);
+	float amountX = pow(_lastMousePosition[0] - x, 2);
+	float amountY = pow(_lastMousePosition[1] - y, 2);
 	GLfloat distance = sqrt(amountX + amountY);
 
 	_cam.rotate(distance * (1.0f/360.0f), amountX / (amountX + amountY), amountY / (amountX + amountY), 0.0);

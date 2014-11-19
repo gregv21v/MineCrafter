@@ -82,7 +82,7 @@ void Camera::init()
 
 void Camera::translate(float x, float y, float z)
 {
-	glm::mat4 _transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
+	_transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
 	_view = _view * _transform;
 
 	// _update _center
@@ -90,12 +90,13 @@ void Camera::translate(float x, float y, float z)
 
 }
 
-void Camera::rotate(GLfloat angle, float x, float y, float z)
+void Camera::rotate(float angle, float x, float y, float z)
 {
-	glm::mat4 _transform;
-	_transform = glm::rotate(_transform, angle, glm::vec3(x, y, z));
+	_transform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
 
 	_view = _view * _transform;
+
+	_center = glm::vec3(_transform[3]);
 }
 
 void Camera::updateLookAt()

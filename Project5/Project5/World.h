@@ -55,7 +55,7 @@ private:
 	Shader _shader;
 	Shader _roomShader;
 	PointLight _light;
-	Window * _window;
+	Window _window;
 	
 	std::vector<Block *> _blocks;
 	std::string _textureFilenames[NUM_TEXTURES];
