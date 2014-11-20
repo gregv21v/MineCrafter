@@ -85,7 +85,7 @@ void World::keyPress(unsigned char key, int x, int y)
 		break;
 	case 'l':
 		_light.toggle();
-		//cout << "Is state: " << _light.isOn() << endl;
+		cout << "Is state: " << _light._isEnabled << endl;
 		break;
 	case 'i':
 		//_cam.camIn(CAM_MOVE);
@@ -194,7 +194,7 @@ void World::draw()
 
 	// setup lighting uniforms
 	_light.render(_shader);
-	_flashLight.render(_shader);
+	//_flashLight.render(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -218,9 +218,7 @@ void World::initValues()
 {
 	// init light values
 	_light._index = 0;
-	_flashLight._index = 1;
-
-	_cam.init();
+	//_flashLight._index = 1;
 
 	//----------------------------------------------------------
 	// Data for Axes

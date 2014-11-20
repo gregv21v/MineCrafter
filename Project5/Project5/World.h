@@ -52,7 +52,6 @@ public:
 private:
 	
 	Shader _shader;
-	Shader _roomShader;
 	Window * _window;
 	
 	std::vector<Block *> _blocks;

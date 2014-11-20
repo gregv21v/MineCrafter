@@ -4,5 +4,7 @@
 
 class SpotLight : public Light
 {
+public:
+	SpotLight();
 };
 

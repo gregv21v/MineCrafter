@@ -19,9 +19,11 @@ struct LightProperties {
 // the set of lights to apply, per invocation of this shader
 const int MaxLights = 2;
 uniform LightProperties Lights[MaxLights];
+
 uniform float Shininess;
 uniform float Strength;
 uniform vec3 EyeDirection;
+
 in vec4 vertColor;
 in vec3 vertNormal;
 in vec4 vertPosition;

@@ -12,5 +12,9 @@
 #include "Color.h"
 #include "Light.h"
 
-class DirectionalLight : public Light{};
+class DirectionalLight : public Light 
+{
+public:
+	DirectionalLight();
+};
 
