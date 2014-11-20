@@ -62,7 +62,7 @@ void World::keyPress(unsigned char key, int x, int y)
 	Color black; 
 	Block * block; 
 	float distance = 0.1; 
-	vmath::vec4 eye = _player.getPosition();
+	glm::vec3 eye = _player.getPosition();
 	black.red = 0;
 	black.green = 255;
 	black.blue = 0;
@@ -74,7 +74,7 @@ void World::keyPress(unsigned char key, int x, int y)
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(black);
-		block->translate(eye[0], eye[1], eye[2]);
+		block->translate(eye.x, eye.y, eye.z);
 		_blocks.push_back(block);
 		break;
 	case 'n':
@@ -85,7 +85,10 @@ void World::keyPress(unsigned char key, int x, int y)
 		break;
 	case 'l':
 		_light.toggle();
-		cout << "Is state: " << _light._isEnabled << endl;
+		//cout << "Is state: " << _light._isEnabled << endl;
+		break;
+	case 'f':
+		_flashLight.toggle();
 		break;
 	case 'i':
 		//_cam.camIn(CAM_MOVE);
@@ -134,7 +137,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec3 projection = glm::vec3(mousePos.x, mousePos.y/mousePos.x, mousePos.y);
+	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x, mousePos.y, 1.0, 1.0);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -148,7 +151,7 @@ void World::mousePressed(int button, int state, int x, int y)
 		block->setColor(blockColor);
 		block->translate(projection.x, projection.y, projection.z);
 		_blocks.push_back(block);
-		cout << "Block added" << endl;
+		//cout << "Block added" << endl;
 	}
 
 	glutPostRedisplay();
@@ -194,7 +197,7 @@ void World::draw()
 
 	// setup lighting uniforms
 	_light.render(_shader);
-	//_flashLight.render(_shader);
+	_flashLight.render(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -218,7 +221,25 @@ void World::initValues()
 {
 	// init light values
 	_light._index = 0;
-	//_flashLight._index = 1;
+	_light._ambient = glm::vec3(1.0, 1.0, 1.0);
+	_light._color = glm::vec3(1.0, 1.0, 1.0);
+
+
+	_flashLight._index = 1;
+	_flashLight._coneDirection = glm::vec3(0.0, 0.0, 1.0);
+	_flashLight._shininess = 2;
+	_flashLight._strength = 1.5;
+	_flashLight._color = glm::vec3(1.0, 1.0, 1.0);
+	_flashLight._ambient = glm::vec3(1.0, 1.0, 1.0);
+	_flashLight._constantAttenuation = 0.25;
+	_flashLight._linearAttenuation = 0.25;
+	_flashLight._quadraticAttenuation = 0.11;
+	_flashLight._position = _player.getPosition() + glm::vec3(0.0, 0.0, -1.0);
+	_flashLight._halfVector = glm::vec3(1.0, 1.0, 1.0);
+	_flashLight._spotExponent = 0.25;
+	_flashLight._spotCosCutoff = 1.5;
+
+	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, 1.0);
 
 	//----------------------------------------------------------
 	// Data for Axes

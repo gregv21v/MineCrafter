@@ -111,3 +111,9 @@ void Camera::render(Shader shader)
 	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, glm::value_ptr(_frustum * _view));
 	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, glm::value_ptr(_view));
 }
+
+
+glm::mat4 Camera::getViewFrustum()
+{
+	return _frustum * _view;
+}

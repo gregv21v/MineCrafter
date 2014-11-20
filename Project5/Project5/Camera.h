@@ -44,6 +44,7 @@ public:
 	void updateLookAt();
 	void reverse();
 	void render(Shader);
+	glm::mat4 Camera::getViewFrustum();
 
 private:
 

@@ -13,7 +13,6 @@ class Light
 {
 public:
 	Light();
-	~Light();
 
 	void render(Shader shader);
 	void init();

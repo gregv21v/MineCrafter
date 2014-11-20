@@ -3,6 +3,10 @@
 #include <GL/glew.h>
 #include <GL/GL.h>
 #include <GL/freeglut.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <iostream>
 #include <vector>
 
@@ -24,7 +28,7 @@ public:
 	
 	void scale(float);
 	void translate(float, float, float);
-	void rotate(float, vmath::vec3);
+	void rotate(float, glm::vec3);
 	void updatePosition();
 	
 	
@@ -34,14 +38,12 @@ public:
 	void moveForward(float distance);
 	void moveBackwards(float distance);
 
-	vmath::vec4 getPosition();
+	glm::vec3 getPosition();
 
 private:
 
-	vmath::vec4 _position;
-
-	
-	vmath::mat4 transform;
+	glm::vec3 _position;
+	glm::mat4 _transform;
 	
 };
 

@@ -5,8 +5,8 @@ Light::Light() :
 	_isEnabled(true),
 	_isLocal(true),
 	_isSpot(false),
-	_ambient(1.0, 0.0, 1.0),
-	_color(0.0, 1.0, 1.0),
+	_ambient(1.0, 1.0, 1.0),
+	_color(1.0, 1.0, 1.0),
 	_position(0.0, 0.0, 0.0),
 	_halfVector(1.0, 1.0, 1.0),
 	_coneDirection(0.0, 0.0, 0.0), // for spot lights
@@ -20,18 +20,11 @@ Light::Light() :
 
 
 	// "Global"
-	_shininess(5),
-	_strength(5), 
-	_eyeDirection(0.0, 1.0, 0.0)
+	_shininess(2),
+	_strength(2), 
+	_eyeDirection(0.0, 0.0, 1.0)
 {
 	
-}
-
-
-Light::~Light()
-{
-
-
 }
 
 
