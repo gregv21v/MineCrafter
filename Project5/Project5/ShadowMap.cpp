@@ -44,10 +44,14 @@ void ShadowMap::init()
 	// Disable color rendering as there are no color attachments
 	glDrawBuffer(GL_NONE);
 
+
+
+
 }
 
 
 void ShadowMap::render()
 {
+	glm::vec3 light_position = glm::vec3(sinf)
 
 }

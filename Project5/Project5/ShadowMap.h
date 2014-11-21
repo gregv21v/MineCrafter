@@ -2,8 +2,10 @@
 #include <GL\glew.h>
 #include <GL\GL.h>
 #include <GL\freeglut.h>
+#include <glm\glm.hpp>
+#include <math.h>
 
-#include <vmath.h>
+
 
 
 class ShadowMap
@@ -16,7 +18,7 @@ public:
 
 
 
-	void render(); // set up uniforms
+	void render(); 
 	void init(); 
 
 private:
