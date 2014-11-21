@@ -1,7 +1,6 @@
 //------------------------------------------------------------------------------------
-// Andrew Joyal and Greg Venezia
-// Project 4
-// 11/10/14
+// Alexander De5
+// 11/24/14
 // Description: WAR.
 //		Press 'n' to take a single turn
 //		Press 'g' to toggle letting the game play on its own

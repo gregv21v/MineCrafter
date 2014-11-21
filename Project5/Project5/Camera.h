@@ -41,6 +41,7 @@ public:
 
 	void init();
 	void translate(float x, float y, float z);
+	void rotate(float angle, float x, float y, float z);
 	void updateLookAt();
 	void reverse();
 	void render(Shader);
@@ -55,5 +56,6 @@ private:
 	glm::mat4 _view;
 	glm::mat4 _transform;
 	glm::mat4 _frustum;
+
 };
 

@@ -133,8 +133,6 @@ void World::mousePressed(int button, int state, int x, int y)
 
 	Color blockColor;
 	Block * block;
-	float distance = 0.1;
-	
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
 	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x, mousePos.y, 1.0, 1.0);
@@ -142,6 +140,10 @@ void World::mousePressed(int button, int state, int x, int y)
 	blockColor.green = 255;
 	blockColor.blue = 0;
 	blockColor.alpha = 1;
+	
+	glm::vec2 mousePos = _window->normalizeTo(glm::vec2(x, y));
+	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
+	
 
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -155,14 +157,21 @@ void World::mousePressed(int button, int state, int x, int y)
 	}
 
 	glutPostRedisplay();
+
 }
 
 void World::mousePassiveMove(int x, int y)
 {
-	vec2 direction = _lastMousePosition - vec2(x, y); // the direction the mouse is moving
-	_lastMousePosition = vec2(x, y);
+	glm::vec2 mousePos(x, y);
+	mousePos = _window->normalizeTo(mousePos);
+	glm::vec2 direction = _lastMousePosition - mousePos; // the direction the mouse is moving
 	
-	
+
+	_cam.rotate((_lastMousePosition[0] - mousePos[0]) * 350.0, 0.0, 1.0, 0.0);
+	_cam.rotate((_lastMousePosition[1] - mousePos[1]) * 350.0, 1.0, 0.0, 0.0);
+
+	_lastMousePosition = mousePos;
+
 	glutPostRedisplay();
 }
 
