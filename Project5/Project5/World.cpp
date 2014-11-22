@@ -140,9 +140,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	blockColor.green = 255;
 	blockColor.blue = 0;
 	blockColor.alpha = 1;
-	
-	glm::vec2 mousePos = _window->normalizeTo(glm::vec2(x, y));
-	glm::vec3 placePoint = glm::vec3(mousePos, _player.getPosition()[2] + 1);
+
 	
 
 
@@ -248,7 +246,11 @@ void World::initValues()
 	_flashLight._spotExponent = 0.25;
 	_flashLight._spotCosCutoff = 1.5;
 
-	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, 1.0);
+	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, 1.0); // this applies to all lights
+														 // so it should be moved from the 
+														 // light class
+
+	_shadowMap.init(_cam.getFrustum());
 
 	//----------------------------------------------------------
 	// Data for Axes

@@ -29,7 +29,7 @@ private:
 	GLuint _textureID;
 	GLuint _fboID;
 
-	const static int DEPTH_TEXTURE_SIZE = 10; // 
+	const static int DEPTH_TEXTURE_SIZE = 1024; // tutorial says this is enough 
 
 	int _time;
 

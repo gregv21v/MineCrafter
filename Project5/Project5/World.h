@@ -25,6 +25,7 @@
 #include "Model.h"
 #include "Block.h"
 #include "Window.h"
+#include "ShadowMap.h"
 
 
 
@@ -80,6 +81,8 @@ private:
 
 	DirectionalLight _light;
 	SpotLight _flashLight;
+
+	ShadowMap _shadowMap;
 
 	int sequenceTest;
 

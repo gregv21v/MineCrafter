@@ -146,3 +146,8 @@ glm::mat4 Camera::getViewFrustum()
 {
 	return _frustum * _view;
 }
+
+glm::mat4 Camera::getFrustum()
+{
+	return _frustum;
+}
