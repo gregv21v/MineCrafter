@@ -3,6 +3,7 @@
 
 Object::Object()
 {
+	center = 0;
 }
 
 

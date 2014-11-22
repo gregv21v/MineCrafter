@@ -23,6 +23,6 @@ public:
 
 protected:
 
-	vec4 center = 0;
+	vec4 center;
 };
 

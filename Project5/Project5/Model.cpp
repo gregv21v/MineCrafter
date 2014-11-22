@@ -3,7 +3,10 @@
 
 Model::Model()
 {
-	color = { 1, 1, 1, 1 };
+	color.red = 1;
+	color.green = 1;
+	color.blue = 1;
+	color.alpha = 1;
 }
 
 Model::~Model()
@@ -489,9 +492,9 @@ void Model::calculateDimentions()
 	max_x = 0;
 	max_y = 0;
 	max_z = 0;
-	min_x = INFINITY;
-	min_y = INFINITY;
-	min_z = INFINITY;
+	min_x = 9999999;
+	min_y = 9999999;
+	min_z = 9999999;
 
 	for (int i = 0; i < vertices.size() - 1; i++)
 	{

@@ -19,7 +19,7 @@ public:
 	void toggle();
 
 //private:
-	int _index;
+	long double _index;
 	bool _isEnabled;
 	bool _isLocal;
 	bool _isSpot;
