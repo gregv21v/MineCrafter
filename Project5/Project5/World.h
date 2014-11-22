@@ -4,6 +4,8 @@
 #include <GL/GL.h>
 #include <GL/freeglut.h>
 
+#include <glm/glm.hpp>
+
 #include <iostream>
 #include <ctime>
 #include <vector>
@@ -11,7 +13,6 @@
 
 #include "LoadShaders.h"
 #include "vgl.h"
-#include "vmath.h"
 #include "Object.h"
 #include "Texture.h"
 #include "Shader.h"
@@ -59,7 +60,7 @@ private:
 	std::vector<Texture *> _textures;
 
 	// Mouse Movement variables
-	vec2 _lastMousePosition;
+	glm::vec2 _lastMousePosition;
 
 
 	
