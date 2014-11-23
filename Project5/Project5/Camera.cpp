@@ -66,16 +66,12 @@ void Camera::panLeft(float distance)
 
 void Camera::init()
 {
-	_eye[0] = 0;
-	_eye[1] = 2;
-	_eye[2] = 3;
-
+	_eye = glm::vec3(0, 2, 3);
 	_center = glm::vec3(0, 2, 0);
 	_up = glm::vec3(0, 1, 0);
 
 	
-	//overhead = glm::rotate((float)60, glm::vec3(1, 0, 0)) * glm::rotate((float)-90, glm::vec3(0, 1, 0));
-	_view = glm::lookAt(_eye, _center, _up);// *overhead;
+	_view = glm::lookAt(_eye, _center, _up);
 
 	_frustum = glm::frustum((float)-0.2f, (float)0.2f, (float)-0.2f, (float)0.2f, (float)0.3f, (float)100);
 }
@@ -87,32 +83,20 @@ void Camera::translate(float x, float y, float z)
 
 	// _update _center
 	_center = glm::vec3(_transform[3]);
+	//_eye += glm::vec3(x, y, z);
+
+	updateLookAt();
 
 }
 
 void Camera::rotate(float angle, float x, float y, float z)
 {
-	glm::mat4 _tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
+	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
 
-	_center[0] -= _eye[0];
-	_center[1] -= _eye[1];
-	_center[2] -= _eye[2];
+	_center = glm::vec3((rotate * translate)[3]);
 
-	glm::mat4 tempMat =
-	{ { 0.0, 0.0, 0.0, 0.0 },
-	{ 0.0, 0.0, 0.0, 0.0 },
-	{ 0.0, 0.0, 0.0, 0.0 },
-	{ _center[0], _center[1], _center[2], 0.0 } };
-	
-	_tempTransform = _tempTransform * tempMat;
-
-	_center[0] = _tempTransform[3][0];
-	_center[1] = _tempTransform[3][1];
-	_center[2] = _tempTransform[3][2];
-
-	_center[0] += _eye[0];
-	_center[1] += _eye[1];
-	_center[2] += _eye[2];
+	_center += _eye;
 	
 	updateLookAt();
 

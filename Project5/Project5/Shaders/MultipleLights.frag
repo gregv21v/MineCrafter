@@ -104,7 +104,7 @@ void main()
 	//             			Shadow Mapping 					      \\
 	//------------------------------------------------------------\\
 	vec3 material_ambient = vec3(1.0, 0.0, 0.0);
-	vec3 material_diffuse = vec3(0.0, 0.0, 1.0);
+	vec3 material_diffuse = vec3(0.0, 1.0, 1.0);
 	vec3 material_specular = vec3(0.0, 1.0, 0.0);
 
 
@@ -116,7 +116,7 @@ void main()
 	float NdotL = dot(N, L);
 	float EdotR = dot(-E, R);
 	float diffuse = max(NdotL, 0.0);
-	float specular = max(pow(EdotR, 1), 0.0);
+	float specular = max(pow(EdotR, 2), 0.0);
 	float f = textureProj(depth_texture, fragment.shadow_coord);
 	vec3 shadowColor = vec3(material_ambient + 
 			f * (material_diffuse * diffuse + material_specular * specular));

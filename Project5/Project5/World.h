@@ -62,6 +62,7 @@ private:
 
 	// Mouse Movement variables
 	glm::vec2 _lastMousePosition;
+	bool _followMouse;
 
 
 	

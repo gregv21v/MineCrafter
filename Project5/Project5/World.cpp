@@ -121,6 +121,10 @@ void World::keyPress(unsigned char key, int x, int y)
 		_player.moveRight(distance);
 		_cam.moveRight(distance);
 		break;
+
+	case 27: // escape key
+		_followMouse = false;
+		break;
 	default:
 		break;
 	}
@@ -146,6 +150,8 @@ void World::mousePressed(int button, int state, int x, int y)
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
+		_followMouse = true;
+
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(blockColor);
@@ -164,9 +170,12 @@ void World::mousePassiveMove(int x, int y)
 	mousePos = _window->normalizeTo(mousePos);
 	glm::vec2 direction = _lastMousePosition - mousePos; // the direction the mouse is moving
 	
-
-	_cam.rotate((_lastMousePosition[0] - mousePos[0]) * 350.0, 0.0, 1.0, 0.0);
-	_cam.rotate((_lastMousePosition[1] - mousePos[1]) * 350.0, 1.0, 0.0, 0.0);
+	if (_followMouse)
+	{
+		_cam.rotate((_lastMousePosition[0] - mousePos[0]) * 350.0, 0.0, 1.0, 0.0);
+		_cam.rotate((_lastMousePosition[1] - mousePos[1]) * 350.0, 1.0, 0.0, 0.0);
+	}
+		
 
 	_lastMousePosition = mousePos;
 
@@ -194,7 +203,6 @@ void World::arrowInput(int key, int x, int y)
 		_cam.panRight(distance);
 		break;
 	}
-
 	glutPostRedisplay();
 }
 
@@ -252,7 +260,7 @@ void World::initValues()
 	_flashLight._spotExponent = 0.25;
 	_flashLight._spotCosCutoff = 1.5;
 
-	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, 1.0); // this applies to all lights
+	_flashLight._eyeDirection = glm::vec3(0.0, 1.0, 1.0); // this applies to all lights
 														 // so it should be moved from the 
 														 // light class
 
