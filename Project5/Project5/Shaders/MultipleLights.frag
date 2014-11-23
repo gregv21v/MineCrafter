@@ -16,6 +16,16 @@ struct LightProperties {
 	float quadraticAttenuation;
 };
 
+// for shadow mapping
+in VS_FS_INTERFACE
+{
+	vec4 shadow_coord;
+	vec3 world_coord;
+	vec3 eye_coord;
+	vec3 normal;
+} fragment;
+
+
 // the set of lights to apply, per invocation of this shader
 const int MaxLights = 2;
 uniform LightProperties Lights[MaxLights];
@@ -24,9 +34,23 @@ uniform float Shininess;
 uniform float Strength;
 uniform vec3 EyeDirection;
 
+// shadow mapping uniforms
+uniform sampler2DShadow depth_texture;
+uniform sampler2D tex;
+uniform vec3 light_position;
+//uniform vec3 material_ambient;
+//uniform vec3 material_diffuse;
+//uniform vec3 material_specular;
+//uniform float material_specular_power;
+
 in vec4 vertColor;
 in vec3 vertNormal;
 in vec4 vertPosition;
+
+// texturing
+in vec2 vertTexCoord;
+flat in int vertIsTextured;
+
 out vec4 fragColor;
 
 void main()
@@ -72,8 +96,50 @@ void main()
 		reflectedLight += Lights[light].color * specular * attenuation;
 	}
 
-	// TODO: implement texture stuff here
-	vec3 rgb = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
-	fragColor = vec4(rgb, vertColor.a);
+	vec3 lightingColor;
+	float alpha;
+	//fragColor = vec4(rgb, vertColor.a);
+
+	//------------------------------------------------------------\\
+	//             			Shadow Mapping 					      \\
+	//------------------------------------------------------------\\
+	vec3 material_ambient = vec3(1.0, 0.0, 0.0);
+	vec3 material_diffuse = vec3(0.0, 0.0, 1.0);
+	vec3 material_specular = vec3(0.0, 1.0, 0.0);
+
+
+
+	vec3 N = fragment.normal;
+	vec3 L = normalize(light_position - fragment.world_coord);
+	vec3 R = reflect(-L, N);
+	vec3 E = normalize(fragment.eye_coord);
+	float NdotL = dot(N, L);
+	float EdotR = dot(-E, R);
+	float diffuse = max(NdotL, 0.0);
+	float specular = max(pow(EdotR, 1), 0.0);
+	float f = textureProj(depth_texture, fragment.shadow_coord);
+	vec3 shadowColor = vec3(material_ambient + 
+			f * (material_diffuse * diffuse + material_specular * specular));
+	//------------------------------------------------------------\\
+
+
+	//------------------------------------------------------------------------------------------\\
+	//             						Texturing 						      					\\
+	//------------------------------------------------------------------------------------------\\
+	if(vertIsTextured == 1)
+	{
+		lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+		alpha = texture(tex, vertTexCoord).a;
+	}
+	else 
+	{
+		lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+		alpha = vertColor.a;
+	}
+	//------------------------------------------------------------------------------------------\\
+
+	fragColor = vec4(min(shadowColor, lightingColor), alpha);
+
+
 
 }

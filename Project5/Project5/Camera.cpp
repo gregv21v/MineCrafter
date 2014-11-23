@@ -109,7 +109,11 @@ void Camera::rotate(float angle, float x, float y, float z)
 	_center[0] = _tempTransform[3][0];
 	_center[1] = _tempTransform[3][1];
 	_center[2] = _tempTransform[3][2];
+<<<<<<< HEAD
 	
+=======
+
+>>>>>>> origin/Gregory
 	_center[0] += _eye[0];
 	_center[1] += _eye[1];
 	_center[2] += _eye[2];
@@ -138,11 +142,17 @@ void Camera::reverse()
 void Camera::render(Shader shader)
 {
 	glUniformMatrix4fv(shader.getUniformLocation("VPMatrix"), 1, GL_FALSE, glm::value_ptr(_frustum * _view));
-	glUniformMatrix4fv(shader.getUniformLocation("VMatrix"), 1, GL_FALSE, glm::value_ptr(_view));
+	glUniformMatrix4fv(shader.getUniformLocation("ViewMatrix"), 1, GL_FALSE, glm::value_ptr(_view));
+	glUniformMatrix4fv(shader.getUniformLocation("ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_frustum));
 }
 
 
 glm::mat4 Camera::getViewFrustum()
 {
 	return _frustum * _view;
+}
+
+glm::mat4 Camera::getFrustum()
+{
+	return _frustum;
 }
