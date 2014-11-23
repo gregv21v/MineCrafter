@@ -98,7 +98,7 @@ void Camera::rotate(float angle, float x, float y, float z)
 	_center[1] -= _eye[1];
 	_center[2] -= _eye[2];
 
-	/*glm::mat4 tempMat =
+	glm::mat4 tempMat =
 	{ { 0.0, 0.0, 0.0, 0.0 },
 	{ 0.0, 0.0, 0.0, 0.0 },
 	{ 0.0, 0.0, 0.0, 0.0 },
@@ -109,7 +109,7 @@ void Camera::rotate(float angle, float x, float y, float z)
 	_center[0] = _tempTransform[3][0];
 	_center[1] = _tempTransform[3][1];
 	_center[2] = _tempTransform[3][2];
-	*/
+	
 	_center[0] += _eye[0];
 	_center[1] += _eye[1];
 	_center[2] += _eye[2];
