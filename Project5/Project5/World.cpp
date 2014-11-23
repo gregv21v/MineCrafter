@@ -200,11 +200,15 @@ void World::arrowInput(int key, int x, int y)
 
 void World::draw()
 {
-	_shader.use();
+	//_shadowMapShader.use();
+	_shadowMap.render(_shader);
 
+	_shader.use();
 	// setup lighting uniforms
 	_light.render(_shader);
 	_flashLight.render(_shader);
+
+	_test.draw(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -220,6 +224,8 @@ void World::draw()
 	}
 
 	_terrain.draw(_shader);
+
+	
 
 
 }
@@ -250,7 +256,8 @@ void World::initValues()
 														 // so it should be moved from the 
 														 // light class
 
-	_shadowMap.init(_cam.getFrustum());
+	
+
 
 	//----------------------------------------------------------
 	// Data for Axes
@@ -280,6 +287,16 @@ void World::initValues()
 	_terrain.setColor(terrainColor);
 	_terrain.translate(0, -1.0, 0);
 
+	_test.init("Models/Block.obj");
+	_test.setColor(terrainColor);
+	_test.translate(0, 2.0, 0);
+
+	//_shadowMapShader.init("Shaders/Shadow.vert", "Shaders/Shadow.frag");
+
+	_shadowMap.init(_cam.getFrustum());
+	_shadowMap.startRenderFromLight();
+		draw();
+	_shadowMap.endRenderFromLight();
 
 
 }

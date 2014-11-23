@@ -1,7 +1,9 @@
 #version 330 core
 
 uniform mat4 VPMatrix;		// view projection matrix
-uniform mat4 VMatrix;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
+uniform mat4 ShadowMatrix;
 
 
 layout(location = 0) in vec4 in_position;
@@ -22,6 +24,14 @@ out vec4 vertPosition;
 flat out int vertIsTextured;
 flat out int textureID;
 
+// shadow mapping struct
+out VS_FS_INTERFACE
+{
+	vec4 shadow_coord;
+	vec3 world_coord;
+	vec3 eye_coord;
+	vec3 normal;
+} vertex;
 
 
 void main()
@@ -31,12 +41,12 @@ void main()
 	{
 		gl_Position = VPMatrix * ModelMatrix * in_position;
 		vertNormal = normalize(NormalMatrix * in_normal);
-		vertPosition = VMatrix * ModelMatrix * in_position;
+		vertPosition = ViewMatrix * ModelMatrix * in_position;
 	}
 	else
 	{
 		gl_Position = VPMatrix * in_position;
-		vertPosition = VMatrix * in_position;
+		vertPosition = ViewMatrix * in_position;
 		vertNormal = in_normal;
 
 	}
@@ -46,4 +56,13 @@ void main()
 	vertIsTextured = in_isTextured;
 	
 	textureID = in_textureID;
+
+	vec4 world_pos = ModelMatrix * in_position;
+	vec4 eye_pos = ViewMatrix * world_pos;
+	vec4 clip_pos = ProjectionMatrix * eye_pos;
+	vertex.world_coord = world_pos.xyz;
+	vertex.eye_coord = eye_pos.xyz;
+	vertex.shadow_coord = ShadowMatrix * world_pos;
+	vertex.normal = mat3(ViewMatrix * ModelMatrix) * in_normal;
+	gl_Position = clip_pos;
 }

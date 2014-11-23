@@ -53,7 +53,7 @@ public:
 
 private:
 	
-	Shader _shader;
+	Shader _shader, _shadowMapShader;
 	Window * _window;
 	
 	std::vector<Block *> _blocks;
@@ -76,7 +76,7 @@ private:
 	// Game Objects
 	Game _game;
 	Player _player;
-	Model _terrain;
+	Model _terrain, _test;
 	Camera _cam;
 
 	DirectionalLight _light;
