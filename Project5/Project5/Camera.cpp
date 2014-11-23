@@ -92,7 +92,9 @@ void Camera::translate(float x, float y, float z)
 
 void Camera::rotate(float angle, float x, float y, float z)
 {
-	glm::mat4 _tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+	glm::mat4 _tempTransform;
+	if (_center.z > _eye.z)
+		_tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
 
 	_center[0] -= _eye[0];
 	_center[1] -= _eye[1];
