@@ -55,6 +55,5 @@ private:
 	glm::mat4 _view;
 	glm::mat4 _transform;
 	glm::mat4 _frustum;
-
 };
 
