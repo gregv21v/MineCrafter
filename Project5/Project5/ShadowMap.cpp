@@ -128,6 +128,7 @@ void ShadowMap::render(Shader shader)
 	// light position
 	glUniform3fv(shader.getUniformLocation("light_position"), 1, glm::value_ptr(_lightPosition));
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, _textureID);
+	glBindTexture(GL_TEXTURE_DEPTH, _textureID);
 	glUniform1i(shader.getUniformLocation("depth_texture"), 0);
+	glBindTexture(GL_TEXTURE_DEPTH, 0);
 }

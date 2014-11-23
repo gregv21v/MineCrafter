@@ -30,8 +30,6 @@
 
 
 
-using vmath::mat4;
-
 static class World
 {
 

@@ -16,6 +16,11 @@ World::~World()
 	{
 		delete _textures[i];
 	}
+
+	for (int i = 0; i < _blocks.size(); i++)
+	{
+		delete _blocks[i];
+	}
 }
 
 void World::init(Window * window)
@@ -47,8 +52,16 @@ void World::display()
 	// clear color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// update the shadow map
+	_shadowMap.init(_cam.getFrustum());
+	_shadowMap.startRenderFromLight();
+		draw();
+	_shadowMap.endRenderFromLight();
+
 	// draw world
 	draw();
+
+	
 
 	// swap the buffers at the end of the display sequence
 	glutSwapBuffers();
@@ -139,7 +152,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	Block * block;
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x, mousePos.y, 1.0, 1.0);
+	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x - 1, mousePos.y, 0.0, 1.0);
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -174,6 +187,12 @@ void World::mousePassiveMove(int x, int y)
 	{
 		_cam.rotate((_lastMousePosition[0] - mousePos[0]) * 350.0, 0.0, 1.0, 0.0);
 		_cam.rotate((_lastMousePosition[1] - mousePos[1]) * 350.0, 1.0, 0.0, 0.0);
+
+		// update the flashlight
+		_flashLight._position = _player.getPosition();
+		_flashLight._coneDirection = _cam.getDirection();
+		_flashLight._eyeDirection = _cam.getDirection();
+		
 	}
 		
 
@@ -208,15 +227,16 @@ void World::arrowInput(int key, int x, int y)
 
 void World::draw()
 {
+	_shader.use();
 	//_shadowMapShader.use();
 	_shadowMap.render(_shader);
 
-	_shader.use();
+	
 	// setup lighting uniforms
 	_light.render(_shader);
 	_flashLight.render(_shader);
 
-	_test.draw(_shader);
+	//_test.draw(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -242,22 +262,26 @@ void World::initValues()
 {
 	// init light values
 	_light._index = 0;
+	_light._isLocal = false;
 	_light._ambient = glm::vec3(1.0, 1.0, 1.0);
 	_light._color = glm::vec3(1.0, 1.0, 1.0);
+	_light._strength = 1;
+	_light._shininess = 1;
 
 
 	_flashLight._index = 1;
-	_flashLight._coneDirection = glm::vec3(0.0, 0.0, 1.0);
-	_flashLight._shininess = 2;
-	_flashLight._strength = 1.5;
+	_flashLight._isLocal = true;
+	_flashLight._coneDirection = glm::vec3(0.0, 0.0, -1.0);
+	_flashLight._shininess = 1;
+	_flashLight._strength = 0.5;
 	_flashLight._color = glm::vec3(1.0, 1.0, 1.0);
 	_flashLight._ambient = glm::vec3(1.0, 1.0, 1.0);
 	_flashLight._constantAttenuation = 0.25;
 	_flashLight._linearAttenuation = 0.25;
 	_flashLight._quadraticAttenuation = 0.11;
 	_flashLight._position = _player.getPosition() + glm::vec3(0.0, 0.0, -1.0);
-	_flashLight._halfVector = glm::vec3(1.0, 1.0, 1.0);
-	_flashLight._spotExponent = 0.25;
+	_flashLight._halfVector = glm::vec3(0.0, 0.0, 1.0);
+	_flashLight._spotExponent = 2;
 	_flashLight._spotCosCutoff = 1.5;
 
 	_flashLight._eyeDirection = glm::vec3(0.0, 1.0, 1.0); // this applies to all lights
@@ -295,9 +319,9 @@ void World::initValues()
 	_terrain.setColor(terrainColor);
 	_terrain.translate(0, -1.0, 0);
 
-	_test.init("Models/Block.obj");
-	_test.setColor(terrainColor);
-	_test.translate(0, 2.0, 0);
+	//_test.init("Models/Block.obj");
+	//_test.setColor(terrainColor);
+	//_test.translate(0, 2.0, 0);
 
 	//_shadowMapShader.init("Shaders/Shadow.vert", "Shaders/Shadow.frag");
 

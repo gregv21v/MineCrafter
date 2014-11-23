@@ -44,8 +44,8 @@ void Light::render(Shader shader)
 	glUniform1f(shader.getUniformLocation("Lights[" + std::to_string(_index) + "].linearAttenuation"), _linearAttenuation);
 	glUniform1f(shader.getUniformLocation("Lights[" + std::to_string(_index) + "].quadraticAttenuation"), _quadraticAttenuation);
 
-	glUniform1f(shader.getUniformLocation("Shininess"), _shininess);
-	glUniform1f(shader.getUniformLocation("Strength"), _strength);
+	glUniform1f(shader.getUniformLocation("Lights[" + std::to_string(_index) + "].shininess"), _shininess);
+	glUniform1f(shader.getUniformLocation("Lights[" + std::to_string(_index) + "].strength"), _strength);
 	glUniform3fv(shader.getUniformLocation("EyeDirection"), 1, glm::value_ptr(_eyeDirection));
 }
 

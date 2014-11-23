@@ -37,6 +37,11 @@ public:
 	void panRight(float distance);
 	void panLeft(float distance);
 
+	glm::vec3 getDirection();
+	glm::vec3 getEye();
+
+	//glm::vec2 project(glm::vec2 screenPoint);
+
 	
 
 	void init();

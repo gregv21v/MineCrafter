@@ -14,6 +14,8 @@ struct LightProperties {
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
+	float shininess;
+	float strength;
 };
 
 // for shadow mapping
@@ -30,8 +32,8 @@ in VS_FS_INTERFACE
 const int MaxLights = 2;
 uniform LightProperties Lights[MaxLights];
 
-uniform float Shininess;
-uniform float Strength;
+//uniform float Shininess;
+//uniform float Strength;
 uniform vec3 EyeDirection;
 
 // shadow mapping uniforms
@@ -89,7 +91,7 @@ void main()
 		if (diffuse == 0.0)
 			specular = 0.0;
 		else
-			specular = pow(specular, Shininess) * Strength;
+			specular = pow(specular, Lights[light].shininess) * Lights[light].strength;
 		// Accumulate all the lights effects
 		scatteredLight += Lights[light].ambient * attenuation +
 							Lights[light].color * diffuse * attenuation;
@@ -104,8 +106,8 @@ void main()
 	//             			Shadow Mapping 					      \\
 	//------------------------------------------------------------\\
 	vec3 material_ambient = vec3(1.0, 0.0, 0.0);
-	vec3 material_diffuse = vec3(0.0, 1.0, 1.0);
-	vec3 material_specular = vec3(0.0, 1.0, 0.0);
+	vec3 material_diffuse = vec3(0.0, 0.0, 0.0);
+	vec3 material_specular = vec3(0.0, 0.0, 0.0);
 
 
 

@@ -13,12 +13,12 @@ Camera::~Camera()
 
 void Camera::moveOut(float move)
 {
-	translate(0, 0, -move);
+	translate(0, 0, move);
 }
 
 void Camera::moveIn(float move)
 {
-	translate(0, 0, move);
+	translate(0, 0, -move);
 }
 
 void Camera::moveUp(float move)
@@ -62,6 +62,16 @@ void Camera::panLeft(float distance)
 	updateLookAt();
 }
 
+glm::vec3 Camera::getDirection()
+{
+	return _eye - _center;
+}
+glm::vec3 Camera::getEye()
+{
+	return _eye;
+}
+
+
 
 
 void Camera::init()
@@ -81,9 +91,11 @@ void Camera::translate(float x, float y, float z)
 	_transform = glm::translate(glm::mat4(), glm::vec3(x, y, z));
 	_view = _view * _transform;
 
-	// _update _center
 	_center = glm::vec3(_transform[3]);
-	//_eye += glm::vec3(x, y, z);
+
+	// TOFIX: When translate and rotation happen at the same time the camera 
+	// spazes out.
+	_eye += _center;
 
 	updateLookAt();
 
@@ -96,7 +108,7 @@ void Camera::rotate(float angle, float x, float y, float z)
 
 	_center = glm::vec3((rotate * translate)[3]);
 
-	_center += _eye;
+	_center += _eye; 
 	
 	updateLookAt();
 
@@ -113,9 +125,8 @@ void Camera::updateLookAt()
 
 void Camera::reverse()
 {
-	//_eye[2] *= -1;
-	//_eye[0] *= -1;
-
+	_eye[2] *= -1;
+	_eye[0] *= -1;
 }
 
 // Sets _up uniform for the View Projection Matrix
@@ -136,3 +147,4 @@ glm::mat4 Camera::getFrustum()
 {
 	return _frustum;
 }
+
