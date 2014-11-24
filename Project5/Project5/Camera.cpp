@@ -64,7 +64,7 @@ void Camera::panLeft(float distance)
 
 glm::vec3 Camera::getDirection()
 {
-	return _eye - _center;
+	return _center - _eye;
 }
 glm::vec3 Camera::getEye()
 {
@@ -136,7 +136,6 @@ void Camera::turnEyeY(float angle)
 	// bounding "box"
 	if (!(_center.y - _eye.y > 2 && angle > 0) && !(_center.y - _eye.y < -2 && angle < 0))
 	{
-
 		glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
 		glm::mat4 rotate = glm::rotate(glm::mat4(), -angle, glm::vec3((_center.z - _eye.z), 0.0, -(_center.x - _eye.x)));
 
@@ -153,6 +152,8 @@ void Camera::turnEyeX(float angle)
 {
 	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
 	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, glm::vec3(0.0, 1.0, 0.0));
+	
+	_center = glm::vec3((rotate*translate)[3]);
 
 	_center += _eye;
 
@@ -188,6 +189,7 @@ glm::mat4 Camera::getFrustum()
 {
 	return _frustum;
 }
+
 
 float Camera::getFrustumDepth()
 {
