@@ -41,6 +41,7 @@ public:
 
 	void init();
 	void translate(float x, float y, float z);
+	void translateEye(float X, float y, float z);
 	void turnEyeX(float angle);
 	void turnEyeY(float angle);
 	void turnEye(float angle, float x, float y, float z);
