@@ -124,7 +124,6 @@ void Camera::translateEye(float x, float y, float z)
 	_center += glm::vec3(x, y, z);
 	_eye += glm::vec3(x, y, z);
 
-
 	updateLookAt();
 }
 

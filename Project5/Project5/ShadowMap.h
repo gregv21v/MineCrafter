@@ -38,9 +38,7 @@ private:
 
 	const static int DEPTH_TEXTURE_SIZE = 1024; // tutorial says this is enough 
 
-	int _time;
-
-	glm::vec3 _Y; // i don't exactly know what this is
+	glm::vec3 _up; // i don't exactly know what this is
 	glm::vec3 _lightPosition;
 	
 	glm::mat4 _sceneModelMatrix;

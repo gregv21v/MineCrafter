@@ -27,15 +27,9 @@ ShadowMap::~ShadowMap()
 void ShadowMap::init(float frustumDepth)
 {
 	// setup matrices and vectors
-	_Y = glm::vec3(0, 1.0, 0); // i don't exactly know what this is
-	_lightPosition = glm::vec3(
-		0, 
-		2, 
-		3
-	);
-
-
-	_sceneModelMatrix = glm::rotate(glm::mat4(), 720.0f, _Y);
+	_up = glm::vec3(0, 1.0, 0.0); // i don't exactly know what this is
+	_lightPosition = glm::vec3(0.0, 1, 0.0);
+	_sceneModelMatrix = glm::rotate(glm::mat4(), 720.0f, _up);
 	_sceneViewMatrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -300.0f));
 	_sceneProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth);
 
@@ -47,7 +41,7 @@ void ShadowMap::init(float frustumDepth)
 	);
 
 
-	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(1.0), _Y);
+	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(0.0), _up);
 	_lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth); // this is slightly different in the example code; i am not sure why.
 
 	_shadowMatrix = _scaleBiasMatrix * _lightProjectionMatrix * _lightViewMatrix;
@@ -86,8 +80,7 @@ void ShadowMap::setupFramebuffer()
 	glGenFramebuffers(1, &_fboID);
 	glBindFramebuffer(GL_FRAMEBUFFER, _fboID);
 		// Attach the depth texture to it
-		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT,
-			_textureID, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _textureID, 0);
 		// Disable color rendering as there are no color attachments
 		glDrawBuffer(GL_NONE);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -129,6 +122,7 @@ void ShadowMap::render(Shader shader)
 	glUniformMatrix4fv(shader.getUniformLocation("ShadowMatrix"), 1, GL_FALSE, glm::value_ptr(_shadowMatrix));
 	// light position
 	glUniform3fv(shader.getUniformLocation("light_position"), 1, glm::value_ptr(_lightPosition));
+
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 	glUniform1i(shader.getUniformLocation("depth_texture"), 0);

@@ -60,9 +60,7 @@ void Player::rotate(float angle, glm::vec3 inAxis)
 
 void Player::updatePosition()
 {
-	_position[0] = _transform[3][0];
-	_position[1] = _transform[3][1];
-	_position[2] = _transform[3][2];
+	_position = glm::vec3(_transform[3]);
 }
 
 

@@ -78,18 +78,15 @@ void World::keyPress(unsigned char key, int x, int y)
 	Color black; 
 	Block * block; 
 	float distance = 0.1; 
-	glm::vec3 eye = _player.getPosition();
-	black.red = 0;
-	black.green = 255;
-	black.blue = 0;
-	black.alpha = 1;
+	glm::vec3 eye = _cam.getEye();
+
 	
 	switch (key)
 	{
 	case 'p':
 		block = new Block();
 		block->init("Models/Block.obj");
-		block->setColor(black);
+		block->setTexture(_textures[0]);
 		block->translate(eye.x, eye.y, eye.z);
 		_blocks.push_back(block);
 		break;
@@ -152,17 +149,12 @@ void World::keyPress(unsigned char key, int x, int y)
 
 void World::mousePressed(int button, int state, int x, int y)
 {
-
-	Color blockColor;
 	Block * block;
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
 	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x - 1, mousePos.y, 0.0, 1.0);
 	
-	blockColor.red = 0;
-	blockColor.green = 255;
-	blockColor.blue = 0;
-	blockColor.alpha = 1;
+
 
 	
 
@@ -174,7 +166,6 @@ void World::mousePressed(int button, int state, int x, int y)
 		block = new Block();
 		block->setTexture(_textures[0]);
 		block->init("Models/Block.obj");
-		block->setColor(blockColor);
 		block->translate(projection.x, projection.y, projection.z);
 		_blocks.push_back(block);
 		//cout << "Block added" << endl;
@@ -197,7 +188,7 @@ void World::mousePassiveMove(int x, int y)
 		_cam.turnEyeY(direction[1] * 350.0);
 
 		// update the flashlight
-		_flashLight._position = _player.getPosition();
+		_flashLight._position = _cam.getEye();
 		_flashLight._coneDirection = _cam.getDirection();
 		_flashLight._eyeDirection = _cam.getDirection();
 		
@@ -295,7 +286,7 @@ void World::initValues()
 	_flashLight._position = _cam.getEye();
 	_flashLight._halfVector = glm::vec3(0.0, 0.0, 1.0);
 	_flashLight._spotExponent = 1;
-	_flashLight._spotCosCutoff = 1.5;
+	_flashLight._spotCosCutoff = 0.5;
 
 	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, -1.0); // this applies to all lights
 														 // so it should be moved from the 

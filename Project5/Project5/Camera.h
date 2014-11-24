@@ -39,8 +39,6 @@ public:
 	glm::vec3 getDirection();
 	glm::vec3 getEye();
 
-	//glm::vec2 project(glm::vec2 screenPoint);
-
 	
 
 	void init();
@@ -65,8 +63,6 @@ private:
 	glm::vec3 _center;
 	glm::vec3 _up;
 	glm::vec3 _eye;
-
-	glm::vec3 _direction;
 
 	glm::mat4 _view;
 	glm::mat4 _transform;
