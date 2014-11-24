@@ -265,6 +265,8 @@ void World::initValues()
 	// init light values
 	_light._index = 0;
 	_light._isLocal = false;
+	_light._isSpot = false;
+	_light._halfVector = glm::vec3(0.0, 0.0, 1.0);
 	_light._ambient = glm::vec3(1.0, 1.0, 1.0);
 	_light._color = glm::vec3(1.0, 1.0, 1.0);
 	_light._strength = 1;
@@ -309,8 +311,8 @@ void World::initValues()
 	axesColor.alpha = 1.0;
 
 	terrainColor.red = 1.0;
-	terrainColor.blue = 0.3;
-	terrainColor.green = 0.0;
+	terrainColor.blue = 1.0;
+	terrainColor.green = 1.0;
 	terrainColor.alpha = 1.0;
 
 	axes->init(axesPosition);

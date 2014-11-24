@@ -46,6 +46,9 @@ public:
 
 	void init();
 	void translate(float x, float y, float z);
+	void translate(glm::vec3 direction);
+
+	void moveInDirection(glm::vec3 direction, float units);
 	void rotate(float angle, float x, float y, float z);
 	void updateLookAt();
 	void reverse();
@@ -58,6 +61,8 @@ private:
 	glm::vec3 _center;
 	glm::vec3 _up;
 	glm::vec3 _eye;
+
+	glm::vec3 _direction;
 
 	glm::mat4 _view;
 	glm::mat4 _transform;

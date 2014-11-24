@@ -97,14 +97,21 @@ void Camera::translate(float x, float y, float z)
 	// spazes out.
 	_eye += _center;
 
+
 	updateLookAt();
 
+}
+
+void Camera::translate(glm::vec3 direction)
+{
+	translate(direction.x, direction.y, direction.z);
 }
 
 void Camera::rotate(float angle, float x, float y, float z)
 {
 	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
 	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+
 
 	_center = glm::vec3((rotate * translate)[3]);
 
@@ -117,8 +124,7 @@ void Camera::rotate(float angle, float x, float y, float z)
 
 void Camera::updateLookAt()
 {
-	_view = glm::lookAt(_eye, _center, _up);
-	_view = _view * _transform;
+	_view = glm::lookAt(_eye, _center, _up) * _transform;
 
 
 }
