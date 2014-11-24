@@ -89,7 +89,7 @@ void Camera::translate(float x, float y, float z)
 	_center = glm::vec3(_transform[3]);
 
 }
-/*
+
 void Camera::turnEye(float angle, float x, float y, float z)
 {
 	glm::mat4 _tempTransform;
@@ -118,7 +118,7 @@ void Camera::turnEye(float angle, float x, float y, float z)
 	updateLookAt();
 
 	
-}*/
+}
 
 void Camera::turnEyeY(float angle)
 {
