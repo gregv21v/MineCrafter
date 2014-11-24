@@ -13,32 +13,32 @@ Camera::~Camera()
 
 void Camera::moveOut(float move)
 {
-	translate(0, 0, -move);
+	translateEye(0, 0, -move);
 }
 
 void Camera::moveIn(float move)
 {
-	translate(0, 0, move);
+	translateEye(0, 0, move);
 }
 
 void Camera::moveUp(float move)
 {
-	translate(0, move, 0);
+	translateEye(0, move, 0);
 }
 
 void Camera::moveDown(float move)
 {
-	translate(0, -move, 0);
+	translateEye(0, -move, 0);
 }
 
 void Camera::moveLeft(float move)
 {
-	translate(move, 0, 0);
+	translateEye(move, 0, 0);
 }
 
 void Camera::moveRight(float move)
 {
-	translate(-move, 0, 0);
+	translateEye(-move, 0, 0);
 }
 
 void Camera::panUp(float distance)
@@ -90,9 +90,61 @@ void Camera::translate(float x, float y, float z)
 
 }
 
-void Camera::rotate(float angle, float x, float y, float z)
+void Camera::translateEye(float x, float y, float z)
 {
-	glm::mat4 _tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+	_center.x += x;
+	_center.y += y;
+	_center.z += z;
+
+	_eye.x += x;
+	_eye.y += y;
+	_eye.z += z;
+
+	updateLookAt();
+}
+
+
+void Camera::turnEyeY(float angle)
+{
+	glm::mat4 _tempTransform;
+	glm::mat4 tempMat;
+
+	if (!(_center.y - _eye.y > 2 && angle > 0) && !(_center.y - _eye.y < -2 && angle < 0))
+	{
+
+		_tempTransform = glm::rotate(glm::mat4(), -angle, glm::vec3((_center.z - _eye.z), 0.0, -(_center.x - _eye.x)));
+
+		_center[0] -= _eye[0];
+		_center[1] -= _eye[1];
+		_center[2] -= _eye[2];
+
+		tempMat =
+		{ { 0.0, 0.0, 0.0, 0.0 },
+		{ 0.0, 0.0, 0.0, 0.0 },
+		{ 0.0, 0.0, 0.0, 0.0 },
+		{ _center[0], _center[1], _center[2], 0.0 } };
+
+		_tempTransform = _tempTransform * tempMat;
+
+		_center[0] = _tempTransform[3][0];
+		_center[1] = _tempTransform[3][1];
+		_center[2] = _tempTransform[3][2];
+
+		_center[0] += _eye[0];
+		_center[1] += _eye[1];
+		_center[2] += _eye[2];
+
+		updateLookAt();
+
+
+	}
+
+}
+
+void Camera::turnEyeX(float angle)
+{
+	glm::mat4 _tempTransform;
+		_tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(0.0, 1.0, 0.0));
 
 	_center[0] -= _eye[0];
 	_center[1] -= _eye[1];
@@ -103,7 +155,7 @@ void Camera::rotate(float angle, float x, float y, float z)
 	{ 0.0, 0.0, 0.0, 0.0 },
 	{ 0.0, 0.0, 0.0, 0.0 },
 	{ _center[0], _center[1], _center[2], 0.0 } };
-	
+
 	_tempTransform = _tempTransform * tempMat;
 
 	_center[0] = _tempTransform[3][0];
@@ -117,10 +169,10 @@ void Camera::rotate(float angle, float x, float y, float z)
 	_center[0] += _eye[0];
 	_center[1] += _eye[1];
 	_center[2] += _eye[2];
-	
+
 	updateLookAt();
 
-	
+
 }
 
 void Camera::updateLookAt()
