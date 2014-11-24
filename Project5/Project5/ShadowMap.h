@@ -19,7 +19,7 @@ public:
 	ShadowMap();
 	~ShadowMap();
 
-	void init(glm::mat4 frustum);
+	void init(float frustumDepth);
 	void render(Shader shader);
 	void generate(); // renders the scene to make the actual shadow map
 	void setupFramebuffer();

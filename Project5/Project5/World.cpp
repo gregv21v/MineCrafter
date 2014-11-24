@@ -5,6 +5,8 @@ World::World()
 
 	axes = new Axes();
 	drawAxes = false;
+	_followMouse = true;
+	_shadowMapppingEnabled = true;
 
 
 	run_game = false;
@@ -27,6 +29,7 @@ void World::init(Window * window)
 {
 
 	_window = window;
+	setupTextures();
 	initValues();
 	_cam.init();
 	//_shader.init("Shaders/PointLight.vert", "Shaders/PointLight.frag");
@@ -44,7 +47,7 @@ void World::init(Window * window)
 
 	glEnable(GL_DEPTH_TEST);
 	//game.init();
-	setupTextures();
+	
 }
 
 void World::display()
@@ -53,12 +56,12 @@ void World::display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// update the shadow map
-	_shadowMap.init(_cam.getFrustum());
 	_shadowMap.startRenderFromLight();
 		draw();
 	_shadowMap.endRenderFromLight();
 
 	// draw world
+	_shader.use();
 	draw();
 
 	
@@ -111,6 +114,9 @@ void World::keyPress(unsigned char key, int x, int y)
 		break;
 	case 'q':
 		drawAxes = !drawAxes;
+		break;
+	case 'm':
+		_shadowMapppingEnabled = !_shadowMapppingEnabled;
 		break;
 	// movement
 	case 'w':
@@ -229,9 +235,10 @@ void World::arrowInput(int key, int x, int y)
 
 void World::draw()
 {
-	_shader.use();
 	//_shadowMapShader.use();
 	_shadowMap.render(_shader);
+
+	glUniform1i(_shader.getUniformLocation("shadowMappingEnabled"), _shadowMapppingEnabled);
 
 	
 	// setup lighting uniforms
@@ -283,12 +290,12 @@ void World::initValues()
 	_flashLight._constantAttenuation = 0.25;
 	_flashLight._linearAttenuation = 0.25;
 	_flashLight._quadraticAttenuation = 0.11;
-	_flashLight._position = _player.getPosition() + glm::vec3(0.0, 0.0, -1.0);
+	_flashLight._position = _cam.getEye();
 	_flashLight._halfVector = glm::vec3(0.0, 0.0, 1.0);
-	_flashLight._spotExponent = 2;
+	_flashLight._spotExponent = 1;
 	_flashLight._spotCosCutoff = 1.5;
 
-	_flashLight._eyeDirection = glm::vec3(0.0, 1.0, 1.0); // this applies to all lights
+	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, -1.0); // this applies to all lights
 														 // so it should be moved from the 
 														 // light class
 
@@ -322,12 +329,13 @@ void World::initValues()
 	_terrain.init("Models/terrain.obj");
 	_terrain.setColor(terrainColor);
 	_terrain.translate(0, -1.0, 0);
+	_terrain.setTexture(_textures[2]);
 
 	//_test.init("Models/Block.obj");
 	//_test.setColor(terrainColor);
 	//_test.translate(0, 2.0, 0);
 
-	_shadowMap.init(_cam.getFrustum());
+	_shadowMap.init(_cam.getFrustumDepth());
 	_shadowMap.startRenderFromLight();
 		draw();
 	_shadowMap.endRenderFromLight();
@@ -341,11 +349,10 @@ void World::setupTextures()
 	// Texture Files
 	_textureFilenames.push_back("Textures/dirtBlock.png");
 	_textureFilenames.push_back("Textures/stoneBlock.png");
-
+	_textureFilenames.push_back("Textures/grassTerrain.png");
 	
 	for (int i = 0; i < _textureFilenames.size(); i++)
 	{
-
 		_textures.push_back(new Texture());
 		_textures.back()->loadFromFile(_textureFilenames[i]);
 		_textures.back()->load();

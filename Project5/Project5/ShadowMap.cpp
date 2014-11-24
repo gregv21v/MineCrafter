@@ -24,21 +24,20 @@ ShadowMap::~ShadowMap()
 
 
 
-void ShadowMap::init(glm::mat4 frustum)
+void ShadowMap::init(float frustumDepth)
 {
 	// setup matrices and vectors
-	_Y = glm::vec3(0, 0, 0); // i don't exactly know what this is
+	_Y = glm::vec3(0, 1.0, 0); // i don't exactly know what this is
 	_lightPosition = glm::vec3(
-		sinf(_time * 6.0f * 3.141592f) * 300.0f,
-		200.0f,
-		cosf(_time * 4.0f * 3.141592f) * 100.0f + 250.0f
+		0, 
+		2, 
+		3
 	);
 
 
-	_sceneModelMatrix = glm::rotate(glm::mat4(), _time * 720.0f, _Y);
-
+	_sceneModelMatrix = glm::rotate(glm::mat4(), 720.0f, _Y);
 	_sceneViewMatrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -300.0f));
-	_sceneProjectionMatrix = frustum;
+	_sceneProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth);
 
 	_scaleBiasMatrix = glm::mat4(
 		glm::vec4(0.5f, 0.0f, 0.0f, 0.0f),
@@ -49,10 +48,12 @@ void ShadowMap::init(glm::mat4 frustum)
 
 
 	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(1.0), _Y);
-	_lightProjectionMatrix = frustum; // this is slightly different in the example code; i am not sure why.
+	_lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth); // this is slightly different in the example code; i am not sure why.
 
 	_shadowMatrix = _scaleBiasMatrix * _lightProjectionMatrix * _lightViewMatrix;
 
+
+	_shader.init("Shaders/GenShadow.vert", "Shaders/GenShadow.frag");
 
 	setupFramebuffer();
 }
@@ -99,7 +100,7 @@ void ShadowMap::setupFramebuffer()
 void ShadowMap::startRenderFromLight()
 {
 	// render scene from point of view of light source
-	_shader.init("Shaders/GenShadow.vert", "Shaders/GenShadow.frag");
+	_shader.use();
 
 	glUniformMatrix4fv(_shader.getUniformLocation("MVPMatrix"),
 		1, GL_FALSE,
@@ -119,6 +120,7 @@ void ShadowMap::endRenderFromLight()
 {
 	glEnable(GL_POLYGON_OFFSET_FILL);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	_shader.unuse();
 }
 
 void ShadowMap::render(Shader shader)
@@ -128,7 +130,7 @@ void ShadowMap::render(Shader shader)
 	// light position
 	glUniform3fv(shader.getUniformLocation("light_position"), 1, glm::value_ptr(_lightPosition));
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_DEPTH, _textureID);
+	glBindTexture(GL_TEXTURE_2D, _textureID);
 	glUniform1i(shader.getUniformLocation("depth_texture"), 0);
-	glBindTexture(GL_TEXTURE_DEPTH, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

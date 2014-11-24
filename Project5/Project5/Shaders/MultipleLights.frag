@@ -37,6 +37,7 @@ uniform LightProperties Lights[MaxLights];
 uniform vec3 EyeDirection;
 
 // shadow mapping uniforms
+uniform int shadowMappingEnabled;
 uniform sampler2DShadow depth_texture;
 uniform sampler2D tex;
 uniform vec3 light_position;
@@ -124,24 +125,26 @@ void main()
 			f * (material_diffuse * diffuse + material_specular * specular));
 	//------------------------------------------------------------\\
 
-	shadowColor = texture(tex, vertTexCoord).rgb + shadowColor;
+	if(shadowMappingEnabled != 1)
+		shadowColor = vec3(1.0);
+
 
 	//------------------------------------------------------------------------------------------\\
 	//             						Texturing 						      					\\
 	//------------------------------------------------------------------------------------------\\
 	if(vertIsTextured == 1)
 	{
-		lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(shadowColor * texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = texture(tex, vertTexCoord).a;
 	}
 	else 
 	{
-		lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(shadowColor * vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = vertColor.a;
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(lightingColor, 1.0);
+	fragColor = vec4(lightingColor, alpha);
 
 
 

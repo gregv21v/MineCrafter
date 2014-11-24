@@ -56,6 +56,8 @@ public:
 	glm::mat4 Camera::getViewFrustum();
 	glm::mat4 Camera::getFrustum();
 
+	float getFrustumDepth();
+
 private:
 
 	glm::vec3 _center;

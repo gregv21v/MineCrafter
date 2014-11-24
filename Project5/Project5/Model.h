@@ -71,7 +71,7 @@ private:
 	//---------------------------------------------------------
 	enum { POS_BUFFER, TEXEL_BUFFER, NORMAL_BUFFER, TEXTURE_BUFFER, NUM_BUFFERS };
 
-	GLuint VAOs[1];
+	GLuint _vaoID;
 	GLuint Buffers[NUM_BUFFERS];
 	//---------------------------------------------------------
 
