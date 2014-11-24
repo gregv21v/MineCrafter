@@ -1,6 +1,5 @@
 #include "Player.h"
 
-
 Player::Player()
 {
 	_transform = glm::mat4();
@@ -10,12 +9,6 @@ Player::Player()
 Player::~Player()
 {
 }
-
-
-
-
-
-
 
 /*void Player::draw(Shader shader)
 {
@@ -65,9 +58,6 @@ void Player::updatePosition()
 	_position[2] = _transform[3][2];
 }
 
-
-
-
 void Player::moveLeft(float distance)
 {
 	translate(-distance, 0, 0);
@@ -84,7 +74,6 @@ void Player::moveBackwards(float distance)
 {
 	translate(0, 0, -distance);
 }
-
 
 glm::vec3 Player::getPosition()
 {

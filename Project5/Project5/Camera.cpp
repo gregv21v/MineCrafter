@@ -11,51 +11,61 @@ Camera::~Camera()
 {
 }
 
+//key pressed: s
 void Camera::moveOut(float move)
 {
-	translate(0, 0, move);
+	translateEye(0, 0, move);
 }
-
+//key pressed: w
 void Camera::moveIn(float move)
 {
-	translate(0, 0, -move);
+	translateEye(0, 0, -move);
 }
 
+//not used
 void Camera::moveUp(float move)
 {
 	translateEye(0, move, 0);
 }
 
+//not used
 void Camera::moveDown(float move)
 {
 	translateEye(0, -move, 0);
 }
 
+//key pressed: a
 void Camera::moveLeft(float move)
 {
 	translateEye(move, 0, 0);
 }
 
+//key pressed: d
 void Camera::moveRight(float move)
 {
 	translateEye(-move, 0, 0);
 }
 
+//key pressed: up arrow
 void Camera::panUp(float distance)
 {
 	_eye.z += distance; 
 	updateLookAt();
 }
+
+//key pressed: down arrow
 void Camera::panDown(float distance)
 {
 	_eye.z -= distance;
 	updateLookAt();
 }
+//key pressed: right arrow
 void Camera::panRight(float distance)
 {
 	_eye.x += distance;
 	updateLookAt();
 }
+//key pressed: left arrow
 void Camera::panLeft(float distance)
 {
 	_eye.x -= distance;

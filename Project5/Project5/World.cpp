@@ -7,8 +7,7 @@ World::World()
 	drawAxes = false;
 	_followMouse = true;
 	_shadowMapppingEnabled = true;
-
-
+	
 	run_game = false;
 }
 
@@ -64,8 +63,6 @@ void World::display()
 	_shader.use();
 	draw();
 
-	
-
 	// swap the buffers at the end of the display sequence
 	glutSwapBuffers();
 }
@@ -78,7 +75,7 @@ void World::keyPress(unsigned char key, int x, int y)
 	Color black; 
 	Block * block; 
 	float distance = 0.1; 
-	glm::vec3 eye = _player.getPosition();
+	glm::vec3 eye = _cam.getEye();
 	black.red = 0;
 	black.green = 255;
 	black.blue = 0;
@@ -90,7 +87,7 @@ void World::keyPress(unsigned char key, int x, int y)
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setColor(black);
-		block->translate(eye.x, eye.y, eye.z);
+		block->translate(eye.x, eye.y -2.5, eye.z + 5);
 		_blocks.push_back(block);
 		break;
 	case 'n':
@@ -164,9 +161,6 @@ void World::mousePressed(int button, int state, int x, int y)
 	blockColor.blue = 0;
 	blockColor.alpha = 1;
 
-	
-
-
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		_followMouse = true;
@@ -202,13 +196,10 @@ void World::mousePassiveMove(int x, int y)
 		_flashLight._eyeDirection = _cam.getDirection();
 		
 	}
-
-
+	
 	_lastMousePosition = mousePos;
-
-
+	
 	glutPostRedisplay();
-
 }
 
 
@@ -263,10 +254,6 @@ void World::draw()
 	}
 
 	_terrain.draw(_shader);
-
-	
-
-
 }
 
 void World::initValues()
@@ -302,8 +289,6 @@ void World::initValues()
 														 // light class
 
 	
-
-
 	//----------------------------------------------------------
 	// Data for Axes
 	//----------------------------------------------------------
@@ -341,8 +326,6 @@ void World::initValues()
 	_shadowMap.startRenderFromLight();
 		draw();
 	_shadowMap.endRenderFromLight();
-
-
 }
 
 void World::setupTextures()
@@ -360,7 +343,6 @@ void World::setupTextures()
 		_textures.back()->load();
 	}
 
-	
 }
 
 void World::idleFunc()
