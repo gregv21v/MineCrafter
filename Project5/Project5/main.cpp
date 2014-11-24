@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA);
 	window.init(900, 900);
-	glutInitWindowPosition(900, 0);
+	glutInitWindowPosition(0, 0);
 	glutInitContextVersion(3, 3);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	glutCreateWindow("Project 5");

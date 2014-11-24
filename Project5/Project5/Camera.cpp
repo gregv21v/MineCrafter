@@ -107,6 +107,13 @@ void Camera::translate(glm::vec3 direction)
 	translate(direction.x, direction.y, direction.z);
 }
 
+/*
+void Camera::turnEye(float angle, float x, float y, float z)
+{
+	glm::mat4 _tempTransform;
+	_tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+>>>>>>> origin/MAH-BRAND
+
 void Camera::rotate(float angle, float x, float y, float z)
 {
 	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
@@ -120,13 +127,56 @@ void Camera::rotate(float angle, float x, float y, float z)
 	updateLookAt();
 
 	
+}*/
+
+void Camera::turnEyeY(float angle)
+{
+	glm::mat4 _tempTransform;
+	glm::mat4 tempMat;
+
+
+
+	_tempTransform = glm::rotate(glm::mat4(), -angle, glm::vec3((_center.z - _eye.z), 0.0, -(_center.x - _eye.x)));
+
+	_center -= _eye;
+
+	tempMat =
+	{ { 0.0, 0.0, 0.0, 0.0 },
+	{ 0.0, 0.0, 0.0, 0.0 },
+	{ 0.0, 0.0, 0.0, 0.0 },
+	{ _center[0], _center[1], _center[2], 0.0 } };
+
+	_tempTransform = _tempTransform * tempMat;
+
+
+	_center = glm::vec3(_tempTransform[3]);
+
+	_center += _eye;
+
+	updateLookAt();
+
+
+	//}
+
+}
+
+void Camera::turnEyeX(float angle)
+{
+	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
+	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, glm::vec3(0.0, 1.0, 0.0));
+
+
+
+	_center += _eye;
+
+	updateLookAt();
+
+
 }
 
 void Camera::updateLookAt()
 {
 	_view = glm::lookAt(_eye, _center, _up) * _transform;
-
-
 }
 
 void Camera::reverse()
