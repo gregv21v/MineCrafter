@@ -45,7 +45,6 @@ public:
 	void updateLookAt();
 	void reverse();
 	void render(Shader);
-	void turnEye(float angle, float x, float y, float z);
 
 private:
 
