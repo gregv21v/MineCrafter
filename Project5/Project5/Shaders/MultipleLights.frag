@@ -14,6 +14,8 @@ struct LightProperties {
 	float constantAttenuation;
 	float linearAttenuation;
 	float quadraticAttenuation;
+	float shininess;
+	float strength;
 };
 
 // for shadow mapping
@@ -30,11 +32,12 @@ in VS_FS_INTERFACE
 const int MaxLights = 2;
 uniform LightProperties Lights[MaxLights];
 
-uniform float Shininess;
-uniform float Strength;
+//uniform float Shininess;
+//uniform float Strength;
 uniform vec3 EyeDirection;
 
 // shadow mapping uniforms
+uniform int shadowMappingEnabled;
 uniform sampler2DShadow depth_texture;
 uniform sampler2D tex;
 uniform vec3 light_position;
@@ -89,7 +92,7 @@ void main()
 		if (diffuse == 0.0)
 			specular = 0.0;
 		else
-			specular = pow(specular, Shininess) * Strength;
+			specular = pow(specular, Lights[light].shininess) * Lights[light].strength;
 		// Accumulate all the lights effects
 		scatteredLight += Lights[light].ambient * attenuation +
 							Lights[light].color * diffuse * attenuation;
@@ -103,9 +106,9 @@ void main()
 	//------------------------------------------------------------\\
 	//             			Shadow Mapping 					      \\
 	//------------------------------------------------------------\\
-	vec3 material_ambient = vec3(1.0, 0.0, 0.0);
-	vec3 material_diffuse = vec3(0.0, 0.0, 1.0);
-	vec3 material_specular = vec3(0.0, 1.0, 0.0);
+	vec3 material_ambient = vec3(0.0, 0.0, 0.0);
+	vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
+	vec3 material_specular = vec3(1.0, 1.0, 1.0);
 
 
 
@@ -116,11 +119,14 @@ void main()
 	float NdotL = dot(N, L);
 	float EdotR = dot(-E, R);
 	float diffuse = max(NdotL, 0.0);
-	float specular = max(pow(EdotR, 1), 0.0);
+	float specular = max(pow(EdotR, 6), 0.0);
 	float f = textureProj(depth_texture, fragment.shadow_coord);
 	vec3 shadowColor = vec3(material_ambient + 
 			f * (material_diffuse * diffuse + material_specular * specular));
 	//------------------------------------------------------------\\
+
+	if(shadowMappingEnabled != 1)
+		shadowColor = vec3(1.0);
 
 
 	//------------------------------------------------------------------------------------------\\
@@ -128,17 +134,17 @@ void main()
 	//------------------------------------------------------------------------------------------\\
 	if(vertIsTextured == 1)
 	{
-		lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(shadowColor * texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = texture(tex, vertTexCoord).a;
 	}
 	else 
 	{
-		lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(shadowColor * vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = vertColor.a;
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(min(shadowColor, lightingColor), alpha);
+	fragColor = vec4(lightingColor, alpha);
 
 
 

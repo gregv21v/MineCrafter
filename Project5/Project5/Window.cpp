@@ -13,7 +13,7 @@ Window::~Window()
 
 glm::vec2 Window::normalizeTo(glm::vec2 vect)
 {
-	return glm::vec2(vect[0] / _width, vect[1] / _height);
+	return glm::vec2(2 * vect[0] / _width, 2 * vect[1] / _height);
 }
 
 

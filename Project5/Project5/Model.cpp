@@ -11,12 +11,17 @@ Model::Model()
 
 Model::~Model()
 {
+	if (_vaoID != 0)
+	{
+		glDeleteVertexArrays(1, &_vaoID);
+	}
+	glDeleteBuffers(NUM_BUFFERS, Buffers);
 }
 
 // Draw
 void Model::draw(Shader shader)
 {
-	glBindVertexArray(VAOs[0]);
+	glBindVertexArray(_vaoID);
 
 	activateTextures(shader);
 
@@ -99,8 +104,8 @@ void Model::init(string filename)
 	loadObject(filename);
 
 	// create Vertex Array
-	glGenVertexArrays(1, VAOs);
-	glBindVertexArray(VAOs[0]);
+	glGenVertexArrays(1, &_vaoID);
+	glBindVertexArray(_vaoID);
 
 	// create Buffers
 	glGenBuffers(NUM_BUFFERS, Buffers);

@@ -65,4 +65,6 @@ void main()
 	vertex.shadow_coord = ShadowMatrix * world_pos;
 	vertex.normal = mat3(ViewMatrix * ModelMatrix) * in_normal;
 	gl_Position = clip_pos;
+
+
 }
