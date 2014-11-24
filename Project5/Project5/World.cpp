@@ -153,6 +153,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
 	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x - 1, mousePos.y, 0.0, 1.0);
+	
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -166,6 +167,7 @@ void World::mousePressed(int button, int state, int x, int y)
 		_followMouse = true;
 
 		block = new Block();
+		block->setTexture(_textures[0]);
 		block->init("Models/Block.obj");
 		block->setColor(blockColor);
 		block->translate(projection.x, projection.y, projection.z);
@@ -323,8 +325,6 @@ void World::initValues()
 	//_test.setColor(terrainColor);
 	//_test.translate(0, 2.0, 0);
 
-	//_shadowMapShader.init("Shaders/Shadow.vert", "Shaders/Shadow.frag");
-
 	_shadowMap.init(_cam.getFrustum());
 	_shadowMap.startRenderFromLight();
 		draw();
@@ -337,18 +337,19 @@ void World::setupTextures()
 {
 
 	// Texture Files
+	_textureFilenames.push_back("Textures/dirtBlock.png");
+	_textureFilenames.push_back("Textures/stoneBlock.png");
 
-	/*
-	for (int i = 0; i < 3; i++)
+	
+	for (int i = 0; i < _textureFilenames.size(); i++)
 	{
-		_textures[i] = new Texture();
-		_textures[i]->loadFromFile(_textureFilenames[i]);
+
+		_textures.push_back(new Texture());
+		_textures.back()->loadFromFile(_textureFilenames[i]);
+		_textures.back()->load();
 	}
 
-	_textures[0]->load();
-	_textures[1]->load();
-	_textures[2]->load();
-	*/
+	
 }
 
 void World::idleFunc()

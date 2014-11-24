@@ -140,7 +140,7 @@ void main()
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(min(shadowColor, lightingColor), alpha);
+	fragColor = vec4(shadowColor + lightingColor, alpha);
 
 
 
