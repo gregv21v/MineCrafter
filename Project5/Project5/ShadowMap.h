@@ -20,26 +20,25 @@ public:
 	~ShadowMap();
 
 	void init(glm::mat4 frustum);
-<<<<<<< HEAD
+
 	void render();
 	void generate(); // renders the scene to make the actual shadow map
 	void setupFramebuffer();
 	void renderFromLight(glm::mat4 frustum);
-=======
+
 	void render(Shader shader);
-	void generate(); // renders the scene to make the actual shadow map
-	void setupFramebuffer();
+	//void generate(); // renders the scene to make the actual shadow map
+	//void setupFramebuffer();
 	void startRenderFromLight();
 	void endRenderFromLight();
->>>>>>> origin/Gregory
+
 
 private:
 	GLuint _textureID;
 	GLuint _fboID;
 
-<<<<<<< HEAD
-	const static int DEPTH_TEXTURE_SIZE = 10; // 
-=======
+	//const static int DEPTH_TEXTURE_SIZE = 10; // 
+
 	// depth texture
 	//glm::vec3 material_ambient;
 	//glm::vec3 material_diffuse;
@@ -47,7 +46,7 @@ private:
 	//float material_specular_power;
 
 	const static int DEPTH_TEXTURE_SIZE = 1024; // tutorial says this is enough 
->>>>>>> origin/Gregory
+
 
 	int _time;
 
