@@ -23,22 +23,22 @@ void Camera::moveIn(float move)
 
 void Camera::moveUp(float move)
 {
-	translate(0, move, 0);
+	translateEye(0, move, 0);
 }
 
 void Camera::moveDown(float move)
 {
-	translate(0, -move, 0);
+	translateEye(0, -move, 0);
 }
 
 void Camera::moveLeft(float move)
 {
-	translate(move, 0, 0);
+	translateEye(move, 0, 0);
 }
 
 void Camera::moveRight(float move)
 {
-	translate(-move, 0, 0);
+	translateEye(-move, 0, 0);
 }
 
 void Camera::panUp(float distance)
@@ -107,12 +107,6 @@ void Camera::translate(glm::vec3 direction)
 	translate(direction.x, direction.y, direction.z);
 }
 
-/*
-void Camera::turnEye(float angle, float x, float y, float z)
-{
-	glm::mat4 _tempTransform;
-	_tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
->>>>>>> origin/MAH-BRAND
 
 void Camera::rotate(float angle, float x, float y, float z)
 {
@@ -122,41 +116,36 @@ void Camera::rotate(float angle, float x, float y, float z)
 
 	_center = glm::vec3((rotate * translate)[3]);
 
-	_center += _eye; 
-	
-	updateLookAt();
+	_center += _eye;
 
-	
-}*/
+}
+void Camera::translateEye(float x, float y, float z)
+{
+	_center += glm::vec3(x, y, z);
+	_eye += glm::vec3(x, y, z);
+
+
+	updateLookAt();
+}
+
 
 void Camera::turnEyeY(float angle)
 {
-	glm::mat4 _tempTransform;
-	glm::mat4 tempMat;
 
 
+	// bounding "box"
+	if (!(_center.y - _eye.y > 2 && angle > 0) && !(_center.y - _eye.y < -2 && angle < 0))
+	{
 
-	_tempTransform = glm::rotate(glm::mat4(), -angle, glm::vec3((_center.z - _eye.z), 0.0, -(_center.x - _eye.x)));
+		glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
+		glm::mat4 rotate = glm::rotate(glm::mat4(), -angle, glm::vec3((_center.z - _eye.z), 0.0, -(_center.x - _eye.x)));
 
-	_center -= _eye;
+		_center = glm::vec3((rotate * translate)[3]);
 
-	tempMat =
-	{ { 0.0, 0.0, 0.0, 0.0 },
-	{ 0.0, 0.0, 0.0, 0.0 },
-	{ 0.0, 0.0, 0.0, 0.0 },
-	{ _center[0], _center[1], _center[2], 0.0 } };
+		_center += _eye;
 
-	_tempTransform = _tempTransform * tempMat;
-
-
-	_center = glm::vec3(_tempTransform[3]);
-
-	_center += _eye;
-
-	updateLookAt();
-
-
-	//}
+		updateLookAt();
+	}
 
 }
 
@@ -165,13 +154,9 @@ void Camera::turnEyeX(float angle)
 	glm::mat4 translate = glm::translate(glm::mat4(), _center - _eye);
 	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, glm::vec3(0.0, 1.0, 0.0));
 
-
-
 	_center += _eye;
 
 	updateLookAt();
-
-
 }
 
 void Camera::updateLookAt()

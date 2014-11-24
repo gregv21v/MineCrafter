@@ -17,7 +17,6 @@
 
 #include "Shader.h"
 
-using vmath::mat4;
 
 class Camera
 {
@@ -48,6 +47,8 @@ public:
 	void translate(float x, float y, float z);
 	void translate(glm::vec3 direction);
 	void rotate(float angle, float x, float y, float z);
+
+	void translateEye(float X, float y, float z);
 	void turnEyeX(float angle);
 	void turnEyeY(float angle);
 	void turnEye(float angle, float x, float y, float z);

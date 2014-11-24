@@ -123,7 +123,6 @@ void World::keyPress(unsigned char key, int x, int y)
 	case 'W':
 		_player.moveForward(distance);
 		_cam.moveIn(distance);
-		cout << "( " << _player.getPosition()[0] << ", " << _player.getPosition()[2]  << ") " << endl;
 		break;
 	case 's':
 	case 'S':
