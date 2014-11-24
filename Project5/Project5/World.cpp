@@ -53,7 +53,6 @@ void World::display()
 {
 	// clear color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	// update the shadow map
 	_shadowMap.startRenderFromLight();
 		draw();
@@ -155,7 +154,7 @@ void World::mousePressed(int button, int state, int x, int y)
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
 	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x - 1, mousePos.y, 0.0, 1.0);
-	
+	glm::vec3 eye = _cam.getEye();
 	blockColor.red = 0;
 	blockColor.green = 255;
 	blockColor.blue = 0;
@@ -169,7 +168,7 @@ void World::mousePressed(int button, int state, int x, int y)
 		block->setTexture(_textures[0]);
 		block->init("Models/Block.obj");
 		block->setColor(blockColor);
-		block->translate(projection.x, projection.y, projection.z);
+		block->translate(eye.x, eye.y - 2.5, eye.z + 5);
 		_blocks.push_back(block);
 		//cout << "Block added" << endl;
 	}
@@ -187,8 +186,8 @@ void World::mousePassiveMove(int x, int y)
 
 	if (_followMouse)
 	{
-		_cam.turnEyeX(direction[0] * 350.0);
-		_cam.turnEyeY(direction[1] * 350.0);
+		_cam.turnEyeX(direction[0] * 360.0);
+		_cam.turnEyeY(direction[1] * 360.0);
 
 		// update the flashlight
 		_flashLight._position = _player.getPosition();
@@ -217,7 +216,6 @@ void World::arrowInput(int key, int x, int y)
 		break;
 	case GLUT_KEY_LEFT:
 		_cam.panLeft(distance);
-
 		break;
 	case GLUT_KEY_RIGHT:
 		_cam.panRight(distance);

@@ -81,9 +81,6 @@ glm::vec3 Camera::getEye()
 	return _eye;
 }
 
-
-
-
 void Camera::init()
 {
 	_eye = glm::vec3(0, 2, 3);
