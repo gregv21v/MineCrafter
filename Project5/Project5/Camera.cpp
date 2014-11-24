@@ -99,6 +99,15 @@ void Camera::rotate(float angle, float x, float y, float z)
 	_center = glm::vec3(_transform[3]);
 }
 
+void Camera::turnEye(float angle, float x, float y, float z)
+{
+	glm::mat4 _tempTransform = glm::rotate(glm::mat4(), angle, glm::vec3(x, y, z));
+
+	_view = _view * _transform;
+
+	_center = glm::vec3(_transform[3]);
+}
+
 void Camera::updateLookAt()
 {
 	_view = glm::lookAt(_eye, _center, _up);
