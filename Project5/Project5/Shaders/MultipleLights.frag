@@ -58,6 +58,15 @@ out vec4 fragColor;
 
 void main()
 {
+	// Default Material Properties 
+	vec3 material_ambient = vec3(0.0, 0.0, 0.0);
+	vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
+	vec3 material_specular = vec3(1.0, 1.0, 1.0);
+
+
+
+
+
 	vec3 scatteredLight = vec3(0.0); // or, to a global ambient light
 	vec3 reflectedLight = vec3(0.0);
 	// loop over all the lights
@@ -106,10 +115,7 @@ void main()
 	//------------------------------------------------------------\\
 	//             			Shadow Mapping 					      \\
 	//------------------------------------------------------------\\
-	vec3 material_ambient = vec3(0.0, 0.0, 0.0);
-	vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
-	vec3 material_specular = vec3(1.0, 1.0, 1.0);
-
+	
 
 
 	vec3 N = fragment.normal;
@@ -144,7 +150,7 @@ void main()
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(lightingColor, alpha);
+	fragColor = vec4(shadowColor * texture(tex, vertTexCoord).rgb, alpha);
 
 
 
