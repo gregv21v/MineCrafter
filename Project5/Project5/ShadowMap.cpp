@@ -39,7 +39,7 @@ void ShadowMap::init(Camera * camera, glm::vec3 lightPosition)
 	);
 
 
-	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(0.0), _up);
+	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(0.0, 1.0, 0.0), _up);
 	_lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, camera->getFrustumDepth()); 
 	_shadowMatrix = _scaleBiasMatrix * _lightProjectionMatrix * _lightViewMatrix;
 	_shader.init("Shaders/GenShadow.vert", "Shaders/GenShadow.frag");
@@ -55,11 +55,10 @@ void ShadowMap::setupFramebuffer()
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32,
 		DEPTH_TEXTURE_SIZE, DEPTH_TEXTURE_SIZE,
-		0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+		0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	// Set up depth comparison mode
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
@@ -106,7 +105,7 @@ void ShadowMap::startRenderFromLight()
 }
 void ShadowMap::endRenderFromLight()
 {
-	glEnable(GL_POLYGON_OFFSET_FILL);
+	glDisable(GL_POLYGON_OFFSET_FILL);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	_shader.unuse();
 }

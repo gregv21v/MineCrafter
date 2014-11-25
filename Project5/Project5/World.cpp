@@ -151,8 +151,6 @@ void World::keyPress(unsigned char key, int x, int y)
 void World::mousePressed(int button, int state, int x, int y)
 {
 	Block * block;
-	glm::vec2 mousePos = glm::vec2(x, y);
-	mousePos = _window->normalizeTo(mousePos);
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
@@ -184,9 +182,12 @@ void World::mousePassiveMove(int x, int y)
 		_cam.turnEyeY(direction[1] * 350.0);
 
 		// update the flashlight
+
 		_flashLight._position = _cam.getEye();
+		_flashLight._position.z += 1;
 		_flashLight._coneDirection = _cam.getDirection();
-		_flashLight._eyeDirection = _cam.getDirection();
+		_flashLight._coneDirection.y += 1;
+		//_flashLight._eyeDirection = _cam.getDirection();
 		
 	}
 
@@ -226,15 +227,10 @@ void World::draw()
 {
 	//_shadowMapShader.use();
 	
-
 	glUniform1i(_shader.getUniformLocation("shadowMappingEnabled"), _shadowMapppingEnabled);
-
-	
 	// setup lighting uniforms
 	_light.render(_shader);
 	_flashLight.render(_shader);
-
-	//_test.draw(_shader);
 
 	// setup camera uniforms
 	_cam.render(_shader);
@@ -246,6 +242,7 @@ void World::draw()
 
 	for (int i = 0; i < _blocks.size(); i++)
 	{
+		_blocks[i]->render(_shader);
 		_blocks[i]->draw(_shader);
 	}
 
@@ -258,17 +255,17 @@ void World::draw()
 
 void World::initValues()
 {
-	// init light values
+	// directional light
 	_light._index = 0;
 	_light._isLocal = false;
 	_light._isSpot = false;
-	_light._halfVector = glm::vec3(0.0, 0.0, 1.0);
-	_light._ambient = glm::vec3(1.0, 1.0, 1.0);
+	_light._halfVector = glm::vec3(0.0, 1.0, 1.0);
+	_light._ambient = glm::vec3(0.8, 0.8, 0.8);
 	_light._color = glm::vec3(1.0, 1.0, 1.0);
 	_light._strength = 1;
 	_light._shininess = 1;
 
-
+	// spot light
 	_flashLight._index = 1;
 	_flashLight._isLocal = true;
 	_flashLight._coneDirection = glm::vec3(0.0, 0.0, -1.0);
@@ -284,7 +281,7 @@ void World::initValues()
 	_flashLight._spotExponent = 1;
 	_flashLight._spotCosCutoff = 0.5;
 
-	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, -1.0); // this applies to all lights
+	_flashLight._eyeDirection = glm::vec3(0.0, 0.0, 1.0); // this applies to all lights
 														 // so it should be moved from the 
 														 // light class
 
@@ -322,7 +319,7 @@ void World::initValues()
 	//_test.setColor(terrainColor);
 	//_test.translate(0, 2.0, 0);
 
-	_shadowMap.init(&_cam, _flashLight._position);
+	_shadowMap.init(&_cam, _cam.getEye());
 	_shadowMap.startRenderFromLight();
 		draw();
 	_shadowMap.endRenderFromLight();

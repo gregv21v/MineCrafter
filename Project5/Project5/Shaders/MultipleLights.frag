@@ -41,10 +41,10 @@ uniform int shadowMappingEnabled;
 uniform sampler2DShadow depth_texture;
 uniform sampler2D tex;
 uniform vec3 light_position;
-//uniform vec3 material_ambient;
-//uniform vec3 material_diffuse;
-//uniform vec3 material_specular;
-//uniform float material_specular_power;
+uniform vec3 material_ambient;
+uniform vec3 material_diffuse;
+uniform vec3 material_specular;
+uniform float material_specular_power;
 
 in vec4 vertColor;
 in vec3 vertNormal;
@@ -59,9 +59,9 @@ out vec4 fragColor;
 void main()
 {
 	// Default Material Properties 
-	vec3 material_ambient = vec3(0.0, 0.0, 0.0);
-	vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
-	vec3 material_specular = vec3(1.0, 1.0, 1.0);
+	//vec3 material_ambient = vec3(0.0, 0.0, 0.0);
+	//vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
+	//vec3 material_specular = vec3(1.0, 1.0, 1.0);
 
 
 
@@ -125,7 +125,7 @@ void main()
 	float NdotL = dot(N, L);
 	float EdotR = dot(-E, R);
 	float diffuse = max(NdotL, 0.0);
-	float specular = max(pow(EdotR, 6), 0.0);
+	float specular = max(pow(EdotR, material_specular_power), 0.0);
 	float f = textureProj(depth_texture, fragment.shadow_coord);
 	vec3 shadowColor = vec3(material_ambient + 
 			f * (material_diffuse * diffuse + material_specular * specular));
@@ -150,7 +150,7 @@ void main()
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(shadowColor * lightingColor, alpha);
+	fragColor = vec4(lightingColor *shadowColor, alpha);
 
 
 
