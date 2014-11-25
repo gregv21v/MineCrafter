@@ -131,15 +131,12 @@ void Camera::translateEye(float x, float y, float z)
 	_center += glm::vec3(x, y, z);
 	_eye += glm::vec3(x, y, z);
 
-
 	updateLookAt();
 }
 
 
 void Camera::turnEyeY(float angle)
 {
-
-
 	// bounding "box"
 	if (!(_center.y - _eye.y > 2 && angle > 0) && !(_center.y - _eye.y < -2 && angle < 0))
 	{
