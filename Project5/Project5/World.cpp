@@ -153,12 +153,6 @@ void World::mousePressed(int button, int state, int x, int y)
 	Block * block;
 	glm::vec2 mousePos = glm::vec2(x, y);
 	mousePos = _window->normalizeTo(mousePos);
-	glm::vec4 projection = _cam.getViewFrustum() * glm::vec4(mousePos.x - 1, mousePos.y, 0.0, 1.0);
-	
-
-
-	
-
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
@@ -167,9 +161,8 @@ void World::mousePressed(int button, int state, int x, int y)
 		block = new Block();
 		block->setTexture(_textures[0]);
 		block->init("Models/Block.obj");
-		//block->translate(projection.x, projection.y, projection.z);
-		glm::vec3 tempVec = _cam.getCenter();
-		block->translate(tempVec[0], tempVec[0], tempVec[0]);
+		glm::vec3 center = _cam.getCenter();
+		block->translate(center.x, center.y, center.z);
 		_blocks.push_back(block);
 		//cout << "Block added" << endl;
 	}
