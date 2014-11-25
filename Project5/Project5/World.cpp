@@ -187,7 +187,7 @@ void World::mousePassiveMove(int x, int y)
 
 		// update the flashlight
 
-		_flashLight._position = _cam.getEye() + glm::vec3(0, 1, 0);
+		_flashLight._position = _cam.getEye();
 		//_flashLight._position.z += 1;
 		//_flashLight._coneDirection = glm::vec3(0, 1.0, 0) + glm::vec3((rotate1 * rotate2)[3]);
 		//_flashLight._coneDirection.y += 1;
@@ -264,10 +264,11 @@ void World::initValues()
 	_light._isLocal = false;
 	_light._isSpot = false;
 	_light._halfVector = glm::vec3(0.0, 0.0, 1.0);
-	_light._ambient = glm::vec3(0.9, 0.9, 0.9);
-	_light._color = glm::vec3(1.0, 1.0, 1.0);
-	_light._strength = 1;
-	_light._shininess = 1;
+	_light._ambient = glm::vec3(0.7, 0.7, 0.4);
+	_light._color = glm::vec3(0.9, 0.9, 0.9);
+	_light._position = glm::vec3(0, 0, 1.0);
+	_light._strength = 2;
+	_light._shininess = 2;
 
 	// spot light
 	_flashLight._index = 1;

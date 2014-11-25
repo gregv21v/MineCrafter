@@ -13,12 +13,12 @@ Camera::~Camera()
 
 void Camera::moveOut(float move)
 {
-	translate(0, 0, move);
+	translateEye(0, 0, -move);
 }
 
 void Camera::moveIn(float move)
 {
-	translate(0, 0, -move);
+	translateEye(0, 0, move);
 }
 
 void Camera::moveUp(float move)
