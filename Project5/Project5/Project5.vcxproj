@@ -112,6 +112,18 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\DirectionalLight.frag" />
+    <None Include="Shaders\DirectionalLight.vert" />
+    <None Include="Shaders\GenShadow.frag" />
+    <None Include="Shaders\GenShadow.vert" />
+    <None Include="Shaders\MultipleLights.frag" />
+    <None Include="Shaders\MultipleLights.vert" />
+    <None Include="Shaders\PointLight.frag" />
+    <None Include="Shaders\PointLight.vert" />
+    <None Include="Shaders\Shadow.frag" />
+    <None Include="Shaders\Shadow.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

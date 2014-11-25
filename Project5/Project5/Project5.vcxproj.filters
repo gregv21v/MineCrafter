@@ -138,4 +138,36 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\DirectionalLight.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\DirectionalLight.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\GenShadow.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\GenShadow.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\MultipleLights.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\MultipleLights.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\PointLight.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\PointLight.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Shadow.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\Shadow.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

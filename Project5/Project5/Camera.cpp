@@ -200,3 +200,7 @@ float Camera::getFrustumDepth()
 	return 100.0f;
 }
 
+glm::vec3 Camera::getCenter()
+{
+	return _center;
+}

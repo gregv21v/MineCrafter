@@ -53,11 +53,13 @@ public:
 	void updateLookAt();
 	void reverse();
 	void render(Shader);
-	glm::mat4 Camera::getViewFrustum();
-	glm::mat4 Camera::getFrustum();
-	glm::mat4 Camera::getView();
+	glm::mat4 getViewFrustum();
+	glm::mat4 getFrustum();
+	glm::mat4 getView();
+	glm::vec3 getCenter();
 
 	float getFrustumDepth();
+
 
 private:
 

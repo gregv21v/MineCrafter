@@ -167,7 +167,9 @@ void World::mousePressed(int button, int state, int x, int y)
 		block = new Block();
 		block->setTexture(_textures[0]);
 		block->init("Models/Block.obj");
-		block->translate(projection.x, projection.y, projection.z);
+		//block->translate(projection.x, projection.y, projection.z);
+		glm::vec3 tempVec = _cam.getCenter();
+		block->translate(tempVec[0], tempVec[0], tempVec[0]);
 		_blocks.push_back(block);
 		//cout << "Block added" << endl;
 	}
