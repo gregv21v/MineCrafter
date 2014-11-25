@@ -189,6 +189,11 @@ glm::mat4 Camera::getFrustum()
 	return _frustum;
 }
 
+glm::mat4 Camera::getView()
+{
+	return _view;
+}
+
 
 float Camera::getFrustumDepth()
 {

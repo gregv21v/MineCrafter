@@ -62,6 +62,7 @@ void World::display()
 
 	// draw world
 	_shader.use();
+	_shadowMap.render(_shader);
 	draw();
 
 	
@@ -229,7 +230,7 @@ void World::arrowInput(int key, int x, int y)
 void World::draw()
 {
 	//_shadowMapShader.use();
-	_shadowMap.render(_shader);
+	
 
 	glUniform1i(_shader.getUniformLocation("shadowMappingEnabled"), _shadowMapppingEnabled);
 
@@ -292,8 +293,6 @@ void World::initValues()
 														 // so it should be moved from the 
 														 // light class
 
-	
-
 
 	//----------------------------------------------------------
 	// Data for Axes
@@ -328,7 +327,7 @@ void World::initValues()
 	//_test.setColor(terrainColor);
 	//_test.translate(0, 2.0, 0);
 
-	_shadowMap.init(_cam.getFrustumDepth());
+	_shadowMap.init(&_cam, _flashLight._position);
 	_shadowMap.startRenderFromLight();
 		draw();
 	_shadowMap.endRenderFromLight();

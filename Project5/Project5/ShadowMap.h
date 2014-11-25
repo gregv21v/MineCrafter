@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "Shader.h"
+#include "Camera.h"
 
 
 
@@ -19,7 +20,7 @@ public:
 	ShadowMap();
 	~ShadowMap();
 
-	void init(float frustumDepth);
+	void init(Camera * camera, glm::vec3 lightPosition);
 	void render(Shader shader);
 	void generate(); // renders the scene to make the actual shadow map
 	void setupFramebuffer();

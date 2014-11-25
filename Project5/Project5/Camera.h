@@ -55,6 +55,7 @@ public:
 	void render(Shader);
 	glm::mat4 Camera::getViewFrustum();
 	glm::mat4 Camera::getFrustum();
+	glm::mat4 Camera::getView();
 
 	float getFrustumDepth();
 

@@ -24,14 +24,12 @@ ShadowMap::~ShadowMap()
 
 
 
-void ShadowMap::init(float frustumDepth)
+void ShadowMap::init(Camera * camera, glm::vec3 lightPosition)
 {
 	// setup matrices and vectors
-	_up = glm::vec3(0, 1.0, 0.0); // i don't exactly know what this is
-	_lightPosition = glm::vec3(0.0, 1, 0.0);
-	_sceneModelMatrix = glm::rotate(glm::mat4(), 720.0f, _up);
-	_sceneViewMatrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -300.0f));
-	_sceneProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth);
+	_up = glm::vec3(0, 1.0, 0.0); 
+
+	_lightPosition = lightPosition;
 
 	_scaleBiasMatrix = glm::mat4(
 		glm::vec4(0.5f, 0.0f, 0.0f, 0.0f),
@@ -42,11 +40,8 @@ void ShadowMap::init(float frustumDepth)
 
 
 	_lightViewMatrix = glm::lookAt(_lightPosition, glm::vec3(0.0), _up);
-	_lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, frustumDepth); // this is slightly different in the example code; i am not sure why.
-
+	_lightProjectionMatrix = glm::frustum(-1.0f, 1.0f, -1.0f, 1.0f, 1.0f, camera->getFrustumDepth()); 
 	_shadowMatrix = _scaleBiasMatrix * _lightProjectionMatrix * _lightViewMatrix;
-
-
 	_shader.init("Shaders/GenShadow.vert", "Shaders/GenShadow.frag");
 
 	setupFramebuffer();
@@ -95,9 +90,9 @@ void ShadowMap::startRenderFromLight()
 	// render scene from point of view of light source
 	_shader.use();
 
-	glUniformMatrix4fv(_shader.getUniformLocation("MVPMatrix"),
+	glUniformMatrix4fv(_shader.getUniformLocation("VPMatrix"),
 		1, GL_FALSE,
-		glm::value_ptr(_lightProjectionMatrix * _lightViewMatrix * _sceneModelMatrix)
+		glm::value_ptr(_lightProjectionMatrix * _lightViewMatrix)
 	);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, _fboID);
@@ -118,6 +113,7 @@ void ShadowMap::endRenderFromLight()
 
 void ShadowMap::render(Shader shader)
 {
+	shader.use();
 	// shadow matrix
 	glUniformMatrix4fv(shader.getUniformLocation("ShadowMatrix"), 1, GL_FALSE, glm::value_ptr(_shadowMatrix));
 	// light position

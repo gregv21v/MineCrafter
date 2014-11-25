@@ -140,17 +140,17 @@ void main()
 	//------------------------------------------------------------------------------------------\\
 	if(vertIsTextured == 1)
 	{
-		lightingColor = min(shadowColor * texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = texture(tex, vertTexCoord).a;
 	}
 	else 
 	{
-		lightingColor = min(shadowColor * vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+		lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
 		alpha = vertColor.a;
 	}
 	//------------------------------------------------------------------------------------------\\
 
-	fragColor = vec4(shadowColor * texture(tex, vertTexCoord).rgb, alpha);
+	fragColor = vec4(shadowColor * lightingColor, alpha);
 
 
 
