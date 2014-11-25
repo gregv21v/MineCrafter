@@ -63,7 +63,24 @@ void main()
 	//vec3 material_diffuse = vec3(1.0, 1.0, 1.0);
 	//vec3 material_specular = vec3(1.0, 1.0, 1.0);
 
+	//------------------------------------------------------------\\
+	//             			Shadow Mapping 					      \\
+	//------------------------------------------------------------\\
+	
 
+
+	vec3 N = fragment.normal;
+	vec3 L = normalize(light_position - fragment.world_coord);
+	vec3 R = reflect(-L, N);
+	vec3 E = normalize(fragment.eye_coord);
+	//float NdotL = dot(N, L);
+	//float EdotR = dot(-E, R);
+	//float diffuse = max(NdotL, 0.0);
+	//float specular = max(pow(EdotR, material_specular_power), 0.0);
+	float f = textureProj(depth_texture, fragment.shadow_coord);
+	//vec3 shadowColor = vec3(material_ambient + 
+			//f * (material_diffuse * diffuse + material_specular * specular));
+	//------------------------------------------------------------\\
 
 
 
@@ -112,45 +129,44 @@ void main()
 	float alpha;
 	//fragColor = vec4(rgb, vertColor.a);
 
-	//------------------------------------------------------------\\
-	//             			Shadow Mapping 					      \\
-	//------------------------------------------------------------\\
 	
 
+	
 
-	vec3 N = fragment.normal;
-	vec3 L = normalize(light_position - fragment.world_coord);
-	vec3 R = reflect(-L, N);
-	vec3 E = normalize(fragment.eye_coord);
-	float NdotL = dot(N, L);
-	float EdotR = dot(-E, R);
-	float diffuse = max(NdotL, 0.0);
-	float specular = max(pow(EdotR, material_specular_power), 0.0);
-	float f = textureProj(depth_texture, fragment.shadow_coord);
-	vec3 shadowColor = vec3(material_ambient + 
-			f * (material_diffuse * diffuse + material_specular * specular));
-	//------------------------------------------------------------\\
-
-	if(shadowMappingEnabled != 1)
-		shadowColor = vec3(1.0);
-
-
+	if(shadowMappingEnabled == 1)
+	{
 	//------------------------------------------------------------------------------------------\\
 	//             						Texturing 						      					\\
 	//------------------------------------------------------------------------------------------\\
-	if(vertIsTextured == 1)
-	{
-		lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
-		alpha = texture(tex, vertTexCoord).a;
-	}
+		if(vertIsTextured == 1)
+		{
+			lightingColor = min(f * texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+			alpha = texture(tex, vertTexCoord).a;
+		}
+		else 
+		{
+			lightingColor = min(f * vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+			alpha = vertColor.a;
+		}
+		//------------------------------------------------------------------------------------------\\
+		fragColor = vec4(lightingColor, alpha);
+	} 
+	// Just so lighting will always work.
 	else 
 	{
-		lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
-		alpha = vertColor.a;
+		if(vertIsTextured == 1)
+		{
+			lightingColor = min(texture(tex, vertTexCoord).rgb * scatteredLight + reflectedLight, vec3(1.0));
+			alpha = texture(tex, vertTexCoord).a;
+		}
+		else 
+		{
+			lightingColor = min(vertColor.rgb * scatteredLight + reflectedLight, vec3(1.0));
+			alpha = vertColor.a;
+		}
+		fragColor = vec4(lightingColor, alpha);
 	}
-	//------------------------------------------------------------------------------------------\\
-
-	fragColor = vec4(lightingColor *shadowColor, alpha);
+	
 
 
 

@@ -4,8 +4,8 @@
 Block::Block()
 {
 	Model::Model();
-	_ambient = glm::vec3(0.0, 0.0, 0.0);
-	_diffuse = glm::vec3(1.0, 1.0, 1.0);
+	_ambient = glm::vec3(1.0, 1.0, 1.0);
+	_diffuse = glm::vec3(0.0, 0.0, 0.0);
 	_specular = glm::vec3(1.0, 1.0, 1.0);
 	_specularPower = 2.5;
 	

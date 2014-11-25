@@ -39,13 +39,13 @@ void main()
 	
 	if(in_isTransformed == 1)
 	{
-		gl_Position = VPMatrix * ModelMatrix * in_position;
+		//gl_Position = VPMatrix * ModelMatrix * in_position;
 		vertNormal = normalize(NormalMatrix * in_normal);
 		vertPosition = ViewMatrix * ModelMatrix * in_position;
 	}
 	else
 	{
-		gl_Position = VPMatrix * in_position;
+		//gl_Position = VPMatrix * in_position;
 		vertPosition = ViewMatrix * in_position;
 		vertNormal = in_normal;
 
@@ -63,7 +63,7 @@ void main()
 	vertex.world_coord = world_pos.xyz;
 	vertex.eye_coord = eye_pos.xyz;
 	vertex.shadow_coord = ShadowMatrix * world_pos;
-	vertex.normal = mat3(ViewMatrix * ModelMatrix) * in_normal;
+	vertex.normal = mat3(ViewMatrix * ModelMatrix) * NormalMatrix * in_normal;
 	gl_Position = clip_pos;
 
 

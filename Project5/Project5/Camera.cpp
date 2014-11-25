@@ -64,7 +64,7 @@ void Camera::panLeft(float distance)
 
 glm::vec3 Camera::getDirection()
 {
-	return _center - _eye;
+	return _eye - _center;
 }
 glm::vec3 Camera::getEye()
 {
