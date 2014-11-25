@@ -92,14 +92,27 @@ void Camera::translate(float x, float y, float z)
 
 void Camera::translateEye(float x, float y, float z)
 {
-	_center.x += x;
+	float fractionZ = (_center.z - _eye.z) / (abs(_center.z - _eye.z) + abs(_center.x - _eye.x));
+	float fractionX = (_center.x - _eye.x) / (abs(_center.z - _eye.z) + abs(_center.x - _eye.x));
+
+
+	//if (_center.z - _eye.z > 0)
+
+
+	_center.z += z * fractionZ;
+	_eye.z += z * fractionZ;
+	_center.x += z * fractionX;
+	_eye.x += z * fractionX;
+
+	_center.z += x * fractionX;
+	_eye.z += x * fractionX;
+	_center.x += x * fractionZ;
+	_eye.x += x * fractionZ;
+
+
 	_center.y += y;
-	_center.z += z;
-
-	_eye.x += x;
 	_eye.y += y;
-	_eye.z += z;
-
+	
 	updateLookAt();
 }
 
