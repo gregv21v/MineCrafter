@@ -1,9 +1,14 @@
 /*
 	Axes.h
-	Author: Andrew Joyal, and Gregory Venezia
+	Author: Andrew Joyal
 	Date: 10/24/2014
 	Course: CSC5210
 	Description: Axes
+*/
+/*
+	Who did what?
+	Andrew Joyal wrote the class and all the headers.
+	Gregory Venezia made it so vec* were used instead of arrays.
 */
 
 #pragma once

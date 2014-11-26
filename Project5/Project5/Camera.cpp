@@ -71,6 +71,11 @@ glm::vec3 Camera::getEye()
 	return _eye;
 }
 
+glm::vec3 Camera::getForwardDirection()
+{
+	return glm::vec3(0, 0, 1.0);
+}
+
 
 
 

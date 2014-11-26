@@ -1,3 +1,6 @@
+/*
+	Andrew wrote all this.
+*/
 #pragma once
 
 #include <GL/glew.h>

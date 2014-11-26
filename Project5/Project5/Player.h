@@ -1,3 +1,11 @@
+/*
+	Andrew originally wrote this whole class.
+	But then Greg modified it and added a few things.
+	All the affine transformation functions are Andrews.
+
+*/
+
+
 #pragma once
 
 #include <GL/glew.h>

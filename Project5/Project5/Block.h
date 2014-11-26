@@ -1,4 +1,9 @@
+/*
+	Gregory Venezia did all of this.
+*/
 #pragma once
+
+
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

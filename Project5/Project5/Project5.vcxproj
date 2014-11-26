@@ -95,9 +95,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="CrossHair.h" />
     <ClInclude Include="DirectionalLight.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="Model.h" />

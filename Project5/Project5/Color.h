@@ -5,6 +5,10 @@
 	Course: CSC5210
 	Description: Color struct
 */
+
+/*
+	Greg wrote this, but Andrew wanted floats instead of char's.
+*/
 #pragma once
 
 struct Color

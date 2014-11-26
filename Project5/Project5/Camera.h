@@ -1,3 +1,12 @@
+/*
+	Andrew Joyal wrote the class originally.
+	Alex Deacon added the rotation, then Gregory Venezia modified it so it was more concise.
+	Alex, and Greg wrote an equal amount of each of the getter functions.
+	Alex wrote all the Eye functions minus the getEye function
+*/
+
+
+
 #pragma once
 
 #include <GL/glew.h>

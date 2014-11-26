@@ -1,3 +1,6 @@
+/*
+	This is all Greg's, and should be all people.
+*/
 #pragma once
 
 #include <GL/glew.h>

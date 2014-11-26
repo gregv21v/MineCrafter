@@ -187,9 +187,9 @@ void World::mousePassiveMove(int x, int y)
 
 		// update the flashlight
 
-		_flashLight._position = _cam.getEye();
+		_flashLight._position = _cam.getCenter();
 		//_flashLight._position.z += 1;
-		//_flashLight._coneDirection = glm::vec3(0, 1.0, 0) + glm::vec3((rotate1 * rotate2)[3]);
+		_flashLight._coneDirection = _cam.getDirection();
 		//_flashLight._coneDirection.y += 1;
 		//_flashLight._eyeDirection = _cam.getDirection();
 		

@@ -1,3 +1,7 @@
+/*
+	This is all Greg's, but the shadow map doesn't actually work, so...
+*/
+
 #pragma once
 #include <GL\glew.h>
 #include <GL\freeglut.h>

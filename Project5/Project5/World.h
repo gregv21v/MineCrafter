@@ -1,3 +1,13 @@
+/*
+	Andrew originially wrote this class.
+	Greg worked on all the code related to the blocks and textures.
+	Greg added the terrain, lighting, and shadow map functionality in its entirity, but shadow mapping doesn't work correctly, so...
+	Alex wrote the code in the mousePassiveMove function that effects the rotation of the camera.
+	
+*/
+
+
+
 #pragma once
 
 #include <GL/glew.h>
@@ -21,11 +31,11 @@
 #include "DirectionalLight.h"
 #include "SpotLight.h"
 #include "Camera.h"
-#include "Game.h"
 #include "Model.h"
 #include "Block.h"
 #include "Window.h"
 #include "ShadowMap.h"
+#include "Player.h"
 
 
 
@@ -74,7 +84,6 @@ private:
 
 	
 	// Game Objects
-	Game _game;
 	Player _player;
 	Model _terrain, _test;
 	Camera _cam;

@@ -1,3 +1,6 @@
+/*
+	Greg loves to make classes.
+*/
 #pragma once
 #include "Light.h"
 

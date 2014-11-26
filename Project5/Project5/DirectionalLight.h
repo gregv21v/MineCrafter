@@ -5,6 +5,11 @@
 	Course: CSC5210
 	Description: A light pointing an a particular direction
 */
+/*
+	Gregory Venezia worote all this.
+*/
+
+
 #pragma once
 
 #include <glm\glm.hpp>

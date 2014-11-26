@@ -1,3 +1,7 @@
+/*
+	This is all Gregs.
+*/
+
 #pragma once
 
 #include "DirectionalLight.h"
