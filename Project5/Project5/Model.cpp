@@ -58,30 +58,30 @@ void Model::draw(Shader shader)
 void Model::scale(float scaleFactor)
 {
 	// Translate to center
-	vmath::mat4 translate1 = vmath::translate(0 - center.x, 0 - center.y, 0 - center.z);
-	vmath::mat4 scale = vmath::scale(scaleFactor);
-	vmath::mat4 translate2 = vmath::translate(center.x, center.y, center.z);
+	glm::mat4 translate1 = glm::translate(glm::mat4(), -glm::vec3(center));
+	glm::mat4 scale = glm::scale(glm::mat4(), scaleFactor * glm::vec3(1.0));
+	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(center));
 
 	transform = (translate2 * scale * translate1) * transform;
 	updateCenter();
 	updateNormalMat();
 }
 
-void Model::translate(float x, float y, float z)
+void Model::translate(glm::vec3 by)
 {
-	vmath::mat4 translate = vmath::translate(x, y, z);
+	glm::mat4 translate = glm::translate(glm::mat4(), by);
 	transform = translate * transform;
 
 	updateCenter();
 	updateNormalMat();
 }
 
-void Model::rotate(float angle, vmath::vec3 inAxis)
+void Model::rotate(float angle, glm::vec3 inAxis)
 {
 	// Translate to center
-	vmath::mat4 translate1 = vmath::translate(0 - center.x, 0 - center.y, 0 - center.z);
-	vmath::mat4 rotate = vmath::rotate(angle, inAxis);
-	vmath::mat4 translate2 = vmath::translate(center.x, center.y, center.z);
+	glm::mat4 translate1 = glm::translate(glm::mat4(), -glm::vec3(center));
+	glm::mat4 rotate = glm::rotate(glm::mat4(), angle, inAxis);
+	glm::mat4 translate2 = glm::translate(glm::mat4(), glm::vec3(center));
 
 	transform = (translate2 * rotate * translate1) * transform;
 	updateCenter();
@@ -109,14 +109,14 @@ void Model::init(string filename)
 
 	glEnableVertexAttribArray(vPosition);
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[POS_BUFFER]);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vmath::vec4), &vertices[0], GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4), &vertices[0], GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
 	if (texels.size() > 0)
 	{
 		glEnableVertexAttribArray(vTexel);
 		glBindBuffer(GL_ARRAY_BUFFER, Buffers[TEXEL_BUFFER]);
-		glBufferData(GL_ARRAY_BUFFER, texels.size() * sizeof(vmath::vec2), &texels[0], GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, texels.size() * sizeof(glm::vec2), &texels[0], GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(vTexel, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
@@ -124,7 +124,7 @@ void Model::init(string filename)
 	{
 		glEnableVertexAttribArray(vNormal);
 		glBindBuffer(GL_ARRAY_BUFFER, Buffers[NORMAL_BUFFER]);
-		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(vmath::vec3), &normals[0], GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &normals[0], GL_DYNAMIC_DRAW);
 		glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	}
 
@@ -136,9 +136,9 @@ void Model::init(string filename)
 		glVertexAttribPointer(vTexture, 1, GL_INT, GL_FALSE, 0, 0);
 	}
 
-	transform = vmath::mat4::identity();
+	transform = glm::mat4();
 	updateNormalMat();
-	center = vec4(0.0, 0.0, 0.0, 1.0);
+	center = glm::vec4(0.0, 0.0, 0.0, 1.0);
 
 	isTransformed = 1;
 	calculateDimentions();
@@ -149,9 +149,9 @@ void Model::loadObject(string filename)
 {
 	name = filename;
 
-	vector<vmath::vec4> in_vertices;
-	vector<vmath::vec3> in_normals;
-	vector<vmath::vec2> in_texels;
+	vector<glm::vec4> in_vertices;
+	vector<glm::vec3> in_normals;
+	vector<glm::vec2> in_texels;
 	vector<string> in_materials;
 
 	bool isTexel = false;
@@ -188,13 +188,13 @@ void Model::loadObject(string filename)
 			if (line.substr(0, 2) == "v ")
 			{
 				istringstream s(line.substr(2));
-				vmath::vec4 v;
+				glm::vec4 v;
 				float x, y, z, w;
 				s >> x;
 				s >> y;
 				s >> z;
 				w = 1.0f;
-				v = vmath::vec4(x, y, z, w);
+				v = glm::vec4(x, y, z, w);
 				in_vertices.push_back(v);
 			}
 			//-----------------------------------
@@ -207,12 +207,12 @@ void Model::loadObject(string filename)
 				{
 					isTexel = true;
 					istringstream s(line.substr(3));
-					vmath::vec2 v;
+					glm::vec2 v;
 					float x, y;
 					s >> x;
 					s >> y;
 					y = 1 - y;
-					v = vmath::vec2(x, y);
+					v = glm::vec2(x, y);
 					in_texels.push_back(v);
 					//-----------------------------------
 				}
@@ -225,12 +225,12 @@ void Model::loadObject(string filename)
 					{
 						isNormal = true;
 						istringstream s(line.substr(3));
-						vmath::vec3 v;
+						glm::vec3 v;
 						float x, y, z;
 						s >> x;
 						s >> y;
 						s >> z;
-						v = vmath::vec3(x, y, z);
+						v = glm::vec3(x, y, z);
 						in_normals.push_back(v);
 						//-----------------------------------
 					}
@@ -569,7 +569,7 @@ void Model::deactivateTextures()
 		texture->deactivate();
 }
 
-void Model::updateTransform(vmath::mat4 inTransform)
+void Model::updateTransform(glm::mat4 inTransform)
 {
 	transform = inTransform * transform;
 	updateCenter();

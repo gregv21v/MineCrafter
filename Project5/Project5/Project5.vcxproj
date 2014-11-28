@@ -73,6 +73,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Face.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="lodepng.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
@@ -94,6 +96,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Face.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="lodepng.h" />
     <ClInclude Include="Model.h" />
@@ -104,6 +107,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />

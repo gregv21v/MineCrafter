@@ -15,7 +15,8 @@
 #include <sstream>
 #include <algorithm>
 
-#include "glm/glm.hpp"
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 
 #include "vgl.h"
 #include "vmath.h"
@@ -50,24 +51,24 @@ public:
 	void setTexture(Texture*);
 	void setColor(Color);
 
-	void scale(float);
-	void translate(float, float, float);
-	void rotate(float, vmath::vec3);
+	void scale(float scaleFactor);
+	void translate(glm::vec3 by);
+	void rotate(float angle, glm::vec3 axis);
 	void updateCenter();
 
-	void updateTransform(vmath::mat4);
+	void updateTransform(glm::mat4);
 	void updateNormalMat();
 
 	float getMaxY();
 
-	vec4 center;
-	mat4 transform;
+	glm::vec4 center;
+	glm::mat4 transform;
 
 private:
 
-	vector<vmath::vec4> vertices;
-	vector<vmath::vec2> texels;
-	vector<vmath::vec3> normals;
+	
+	vector<glm::vec2> texels;
+	vector<glm::vec3> normals;
 	vector<int> textureIDs;
 	Texture* texture;
 
@@ -111,5 +112,6 @@ private:
 protected:
 
 	string name;
+	vector<glm::vec4> vertices;
 };
 

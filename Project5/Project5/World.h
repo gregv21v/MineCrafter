@@ -36,6 +36,7 @@
 #include "Window.h"
 #include "ShadowMap.h"
 #include "Player.h"
+#include "Terrain.h"
 
 
 
@@ -53,6 +54,7 @@ public:
 	void arrowInput(int, int, int);
 	void mousePressed(int button, int state, int x, int y);
 	void mousePassiveMove(int x, int y);
+	void mouseActiveMove(int x, int y);
 	void draw();							// draw function for entire World
 	void initValues();						// initializes values
 	void setupTextures();
@@ -85,7 +87,8 @@ private:
 	
 	// Game Objects
 	Player _player;
-	Model _terrain, _test;
+	Model _test;
+	Terrain _terrain;
 	Camera _cam;
 
 	DirectionalLight _light;

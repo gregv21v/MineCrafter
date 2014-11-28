@@ -88,7 +88,7 @@ void World::keyPress(unsigned char key, int x, int y)
 		block = new Block();
 		block->init("Models/Block.obj");
 		block->setTexture(_textures[0]);
-		block->translate(eye.x, eye.y, eye.z);
+		block->translate(eye);
 		_blocks.push_back(block);
 		break;
 	case 'n':
@@ -156,18 +156,27 @@ void World::mousePressed(int button, int state, int x, int y)
 	{
 		_followMouse = true;
 
-		block = new Block();
-		block->setTexture(_textures[0]);
-		block->init("Models/Block.obj");
-		glm::vec3 center = _cam.getCenter();
-		block->translate(center.x, center.y, center.z);
-		_blocks.push_back(block);
+		/*
+			block = new Block();
+			block->setTexture(_textures[0]);
+			block->init("Models/Block.obj");
+			block->translate(_cam.getCenter());
+			_blocks.push_back(block);
+		*/
+		
 		//cout << "Block added" << endl;
+
+
+		// create the face
+		//_terrain.makeFace(_cam.getCenter());
 	}
 
 	glutPostRedisplay();
 
 }
+
+
+
 
 void World::mousePassiveMove(int x, int y)
 {
@@ -181,8 +190,8 @@ void World::mousePassiveMove(int x, int y)
 		_cam.turnEyeX(direction[0] * 350.0);
 		_cam.turnEyeY(direction[1] * 350.0);
 
-		glm::mat4 rotate1 = glm::rotate(glm::mat4(), direction[0] * 350, glm::vec3(1, 0, 0));
-		glm::mat4 rotate2 = glm::rotate(glm::mat4(), direction[1] * 350, glm::vec3(0, 1, 0));
+		//glm::mat4 rotate1 = glm::rotate(glm::mat4(), direction[0] * 350, glm::vec3(1, 0, 0));
+		//glm::mat4 rotate2 = glm::rotate(glm::mat4(), direction[1] * 350, glm::vec3(0, 1, 0));
 
 
 		// update the flashlight
@@ -201,6 +210,15 @@ void World::mousePassiveMove(int x, int y)
 
 	glutPostRedisplay();
 
+}
+
+void World::mouseActiveMove(int x, int y)
+{
+	glm::vec2 mousePos(x, y);
+	mousePos = _window->normalizeTo(mousePos);
+	glm::vec2 direction = _lastMousePosition - mousePos; // the direction the mouse is moving
+
+	_terrain.extrude(glm::vec3(0, mousePos.y, 0));
 }
 
 
@@ -291,6 +309,9 @@ void World::initValues()
 														 // light class
 
 
+	_light._isEnabled = _flashLight._isEnabled = false;
+	_shadowMapppingEnabled = false;
+
 	//----------------------------------------------------------
 	// Data for Axes
 	//----------------------------------------------------------
@@ -317,7 +338,7 @@ void World::initValues()
 
 	_terrain.init("Models/terrain.obj");
 	_terrain.setColor(terrainColor);
-	_terrain.translate(0, -1.0, 0);
+	_terrain.translate(glm::vec3(0, -1.0, 0));
 	_terrain.setTexture(_textures[2]);
 
 	//_test.init("Models/Block.obj");
