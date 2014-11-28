@@ -72,9 +72,7 @@
     <ClCompile Include="Axes.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CrossHair.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="lodepng.cpp" />
